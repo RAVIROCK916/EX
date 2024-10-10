@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import SignInForm from "@/components/auth/signin-form";
+import LoginForm from "@/components/auth/login-form";
 
 export const Route = createFileRoute("/(auth)/_layout/login")({
 	component: LoginPage,
@@ -10,12 +10,12 @@ function LoginPage() {
 		<div className="flex flex-col items-start max-w-sm mx-auto h-dvh overflow-hidden pt-4 md:pt-20">
 			<div className="flex items-center w-full py-8 border-b border-border/80">
 				<Link href="/#home" className="flex items-center gap-x-2">
-					{/* <Icons.logo className="w-6 h-6" /> */}
-					<h1 className="text-lg font-medium">linkify</h1>
+					<img src="/X.svg" className="w-6 h-6" />
+					<h1 className="text-lg font-medium">EX </h1>
 				</Link>
 			</div>
 
-			<SignInForm />
+			<LoginForm />
 
 			<div className="flex flex-col items-start w-full">
 				<p className="text-sm text-muted-foreground">
