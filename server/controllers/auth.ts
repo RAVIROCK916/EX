@@ -4,7 +4,6 @@ import { getUsersByUsername } from "../db/queryFn";
 import { createNewUser, generateTokens, getUser } from "../services/auth";
 
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
 export const login = async (req: Request, res: Response) => {
 	const { username, password } = req.body;
