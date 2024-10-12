@@ -11,6 +11,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
+import { SERVER_URL } from "../../constants";
+
 const SignUpForm = () => {
 	// const router = useRouter();
 
@@ -30,14 +32,20 @@ const SignUpForm = () => {
 
 		// if (!isLoaded) return;
 
+		// validation
+
 		if (!username || !email || !password) {
 			toast.error("Username, email and password are required!");
+			return;
+		}
+		if (username.includes(" ")) {
+			toast.error("Username cannot contain spaces and uppercase letters!");
 			return;
 		}
 
 		setIsUpdating(true);
 
-		axios.post("http://localhost:3000/auth/signup", {
+		axios.post(`${SERVER_URL}/auth/signup`, {
 			username: username,
 			email: email,
 			password: password,
@@ -187,7 +195,7 @@ const SignUpForm = () => {
 						value={username}
 						// disabled={!isLoaded || isUpdating}
 						onChange={(e) => setUsername(e.target.value)}
-						placeholder="Enter your username"
+						placeholder="john_doe"
 						className="w-full focus-visible:border-foreground"
 					/>
 				</div>
@@ -199,7 +207,7 @@ const SignUpForm = () => {
 						value={email}
 						// disabled={!isLoaded || isUpdating}
 						onChange={(e) => setEmail(e.target.value)}
-						placeholder="Enter your email"
+						placeholder="johndoe@gmail.com"
 						className="w-full focus-visible:border-foreground"
 					/>
 				</div>
@@ -212,7 +220,7 @@ const SignUpForm = () => {
 							value={password}
 							// disabled={!isLoaded || isUpdating}
 							onChange={(e) => setPassword(e.target.value)}
-							placeholder="Enter your password"
+							placeholder="12345678"
 							className="w-full focus-visible:border-foreground"
 						/>
 						<Button

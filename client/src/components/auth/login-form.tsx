@@ -4,15 +4,60 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeSlash, Spinner } from "phosphor-react";
+import { toast } from "sonner";
+import axios from "axios";
+import { SERVER_URL } from "@/constants";
+import { useNavigate } from "@tanstack/react-router";
 
 const LoginForm = () => {
-	const [email, setEmail] = useState<string>("");
+	const [username, setUsername] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	const handleLogin = (e: React.FormEvent) => {
+	const navigate = useNavigate();
+
+	const handleLogin = async (e: React.FormEvent) => {
 		e.preventDefault();
+
+		if (!username || !password) {
+			toast.error("username and password are required!");
+			return;
+		}
+
+		setIsLoading(true);
+
+		try {
+			await axios.post(
+				`${SERVER_URL}/auth/login`,
+				{
+					username: username,
+					password: password,
+				},
+				{
+					withCredentials: true,
+				}
+			);
+			navigate({ to: "/" });
+		} catch (err: any) {
+			console.log("error: ", err);
+
+			const err_code = err.response.data.code;
+
+			switch (err_code) {
+				case "form_param_format_invalid":
+					toast.error("Invalid username. Please enter a valid username.");
+					break;
+				case "form_password_pwned":
+					toast.error("The password is incorrect. Please try again.");
+					break;
+				default:
+					toast.error("An error occurred. Please try again");
+					break;
+			}
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	return (
@@ -20,14 +65,14 @@ const LoginForm = () => {
 			<h2 className="text-2xl font-semibold">Login to EX</h2>
 			<form onSubmit={handleLogin} className="w-full">
 				<div className="space-y-2 w-full">
-					<Label htmlFor="email">Email</Label>
+					<Label htmlFor="username">Username</Label>
 					<Input
-						id="email"
-						type="email"
-						value={email}
+						id="username"
+						type="text"
+						value={username}
 						// disabled={!isLoaded || isLoading}
-						onChange={(e) => setEmail(e.target.value)}
-						placeholder="Enter your email"
+						onChange={(e) => setUsername(e.target.value)}
+						placeholder="john_doe"
 						className="w-full focus-visible:border-foreground"
 					/>
 				</div>
@@ -40,7 +85,7 @@ const LoginForm = () => {
 							value={password}
 							// disabled={!isLoaded || isLoading}
 							onChange={(e) => setPassword(e.target.value)}
-							placeholder="Enter your password"
+							placeholder="12345678"
 							className="w-full focus-visible:border-foreground"
 						/>
 						<Button
