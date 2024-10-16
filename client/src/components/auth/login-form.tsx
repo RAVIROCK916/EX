@@ -1,116 +1,139 @@
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Eye, EyeSlash, Spinner } from "phosphor-react";
+import { Button, Input, Label, Loader } from "@/components";
+
+import { Eye, EyeSlash } from "phosphor-react";
 import { toast } from "sonner";
 import axios from "axios";
 import { SERVER_URL } from "@/constants";
-import { useNavigate } from "@tanstack/react-router";
+import { z } from "zod";
+import { router } from "@/App";
+import { setToken } from "@/state/reducers/auth";
+import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
-	const [username, setUsername] = useState<string>("");
-	const [password, setPassword] = useState<string>("");
-	const [showPassword, setShowPassword] = useState<boolean>(false);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-	const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-	const handleLogin = async (e: React.FormEvent) => {
-		e.preventDefault();
+  const formData = { username, password };
 
-		if (!username || !password) {
-			toast.error("username and password are required!");
-			return;
-		}
+  const formSchema = z.object({
+    username: z
+      .string()
+      .min(3, "Username should be at least 3 characters")
+      .max(20, "Username cannot exceed 20 characters")
+      .regex(/^\S*$/, "Username should not contain spaces"),
+    password: z
+      .string()
+      .min(4, { message: "Password is too short!" })
+      .max(20, { message: "Password is too long!" }),
+  });
 
-		setIsLoading(true);
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-		try {
-			await axios.post(
-				`${SERVER_URL}/auth/login`,
-				{
-					username: username,
-					password: password,
-				},
-				{
-					withCredentials: true,
-				}
-			);
-			navigate({ to: "/" });
-		} catch (err: any) {
-			console.log("error: ", err);
+    // validation
 
-			const err_code = err.response.data.code;
+    const formValidation = formSchema.safeParse(formData);
 
-			switch (err_code) {
-				case "form_param_format_invalid":
-					toast.error("Invalid username. Please enter a valid username.");
-					break;
-				case "form_password_pwned":
-					toast.error("The password is incorrect. Please try again.");
-					break;
-				default:
-					toast.error("An error occurred. Please try again");
-					break;
-			}
-		} finally {
-			setIsLoading(false);
-		}
-	};
+    if (!formValidation.success) {
+      formValidation.error.errors.forEach((error) => {
+        toast.error(error.message);
+      });
+      return;
+    }
 
-	return (
-		<div className="flex flex-col items-start gap-y-6 py-8 w-full px-0.5">
-			<h2 className="text-2xl font-semibold">Login to EX</h2>
-			<form onSubmit={handleLogin} className="w-full">
-				<div className="space-y-2 w-full">
-					<Label htmlFor="username">Username</Label>
-					<Input
-						id="username"
-						type="text"
-						value={username}
-						// disabled={!isLoaded || isLoading}
-						onChange={(e) => setUsername(e.target.value)}
-						placeholder="john_doe"
-						className="w-full focus-visible:border-foreground"
-					/>
-				</div>
-				<div className="mt-4 space-y-2">
-					<Label htmlFor="password">Password</Label>
-					<div className="relative w-full">
-						<Input
-							id="password"
-							type={showPassword ? "text" : "password"}
-							value={password}
-							// disabled={!isLoaded || isLoading}
-							onChange={(e) => setPassword(e.target.value)}
-							placeholder="12345678"
-							className="w-full focus-visible:border-foreground"
-						/>
-						<Button
-							type="button"
-							size="icon"
-							variant="ghost"
-							// disabled={!isLoaded || isLoading}
-							className="absolute top-1 right-1"
-							onClick={() => setShowPassword(!showPassword)}
-						>
-							{showPassword ? <EyeSlash size={16} /> : <Eye size={16} />}
-						</Button>
-					</div>
-				</div>
-				<div className="mt-4 w-full">
-					<Button
-						type="submit"
-						// disabled={!isLoaded || isLoading}
-						className="w-full"
-					>
-						{isLoading ? <Spinner className="w-5 h-5 animate-spin" /> : "Login"}
-					</Button>
-				</div>
-			</form>
-		</div>
-	);
+    setIsLoading(true);
+
+    // send login request to server
+
+    try {
+      const res = await axios.post(
+        `${SERVER_URL}/auth/login`,
+        {
+          username: username,
+          password: password,
+        },
+        { withCredentials: true },
+      );
+
+      dispatch(setToken(res.data.token));
+
+      router.navigate({ to: "/" });
+    } catch (err: any) {
+      console.log("error: ", err);
+
+      const err_code = err.response.data.code;
+
+      switch (err_code) {
+        case "form_param_format_invalid":
+          toast.error("Invalid username. Please enter a valid username.");
+          break;
+        case "form_password_pwned":
+          toast.error("The password is incorrect. Please try again.");
+          break;
+        default:
+          toast.error("An error occurred. Please try again");
+          break;
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex w-full flex-col items-start gap-y-6 px-0.5 py-8">
+      <h2 className="text-2xl font-semibold">Login to EX</h2>
+      <form onSubmit={handleLogin} className="w-full">
+        <div className="w-full space-y-2">
+          <Label htmlFor="username">Username</Label>
+          <Input
+            id="username"
+            type="text"
+            value={username}
+            // disabled={!isLoaded || isLoading}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="john_doe"
+          />
+        </div>
+        <div className="mt-4 space-y-2">
+          <Label htmlFor="password">Password</Label>
+          <div className="relative w-full">
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              // disabled={!isLoaded || isLoading}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="12345678"
+            />
+            <Button
+              type="button"
+              size="icon"
+              variant="ghost"
+              // disabled={!isLoaded || isLoading}
+              className="absolute right-1 top-1"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeSlash size={16} /> : <Eye size={16} />}
+            </Button>
+          </div>
+        </div>
+        <div className="mt-4 w-full">
+          <Button
+            type="submit"
+            // disabled={!isLoaded || isLoading}
+            className="w-full"
+          >
+            {isLoading ? <Loader /> : "Login"}
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
 };
 export default LoginForm;
