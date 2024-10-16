@@ -13,6 +13,12 @@ export const insertIntoUsers = async (
 
 export const getUsersByUsername = (username: string) => {
 	const users = db.query("SELECT * FROM users WHERE username = $1", [username]);
+	return users;
+};
 
+export const searchUsers = (search: string) => {
+	const users = db.query("SELECT * FROM users WHERE username LIKE $1", [
+		`%${search}%`,
+	]);
 	return users;
 };
