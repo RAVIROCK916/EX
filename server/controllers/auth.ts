@@ -112,7 +112,9 @@ export const signup = async (req: Request, res: Response) => {
 export const refreshToken = (req: Request, res: Response) => {
 	const refreshToken = req.cookies.refreshToken;
 	if (!refreshToken) {
-		return res.status(401).send({ message: "Unauthorized" });
+		return res
+			.status(401)
+			.send({ message: "Unauthorized! Refresh token required!!!" });
 	}
 
 	jwt.verify(
@@ -122,7 +124,9 @@ export const refreshToken = (req: Request, res: Response) => {
 			console.log(decoded);
 
 			if (err) {
-				return res.status(401).send({ error: "User unauthorized" });
+				return res
+					.status(401)
+					.send({ error: "User unauthorized! Invalid Refresh token!!!" });
 			}
 
 			const accessToken = generateAccessToken(decoded.userId);

@@ -9,7 +9,9 @@ export default async function isAuthenticated(
 	const accessToken = req.headers.authorization?.split(" ")[1];
 
 	if (!accessToken) {
-		return res.status(401).send({ message: "Unauthorized" });
+		return res
+			.status(401)
+			.send({ message: "Unauthorized! Access token required!!!" });
 	}
 
 	jwt.verify(

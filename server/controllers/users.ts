@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getUsersBySearch } from "../services/users";
+import { followUserById, getUsersBySearch } from "../services/users";
 
 export const fetchUsers = async (req: Request, res: Response) => {
 	const { search } = req.query;
@@ -10,11 +10,16 @@ export const fetchUsers = async (req: Request, res: Response) => {
 };
 
 export const followUser = async (req: Request, res: Response) => {
-	// const { following_user } = req.body;
-	// const { id: followerId } = req.user;
-	// const user = await followUserById(userId, followerId);
+	const { userId } = req.body;
+	const followerId = req.user;
 
-	console.log(req.user);
+	if (!userId || !followerId) {
+		return res.status(401).send({ error: "Unauthorized" });
+	}
 
-	res.send({ message: "User followed successfully" });
+	try {
+		followUserById(userId, followerId);
+
+		res.send({ message: "User followed successfully" });
+	} catch {}
 };

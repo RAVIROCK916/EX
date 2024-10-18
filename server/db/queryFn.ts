@@ -22,3 +22,11 @@ export const searchUsers = (search: string) => {
 	]);
 	return users;
 };
+
+export const followUser = (userId: string, followerId: string) => {
+	const user = db.query(
+		"INSERT INTO follows (user_id, follower_id) VALUES ($1, $2)",
+		[userId, followerId]
+	);
+	return user;
+};
