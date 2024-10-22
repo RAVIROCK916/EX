@@ -15,7 +15,7 @@ const SearchResults = ({ loading, data }: Props) => {
   const token = useSelector((state: RootState) => state.auth.token);
 
   const handleClick = (user: User) => {
-    handleAuth("POST", "/users/follow", { following_user: user.id }, token);
+    handleAuth("POST", "/users/follow", { userId: user.id }, token);
   };
 
   return (

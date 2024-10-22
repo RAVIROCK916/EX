@@ -1,0 +1,12 @@
+POST http://localhost:3000/auth/signup 
+Content-Type: application/json
+
+{
+    "username": "Ravi Teja",
+    "email": "ravi@gmail.com",
+    "password": "abcd"
+}
+
+###
+
+POST http://localhost:3000/auth/logout
