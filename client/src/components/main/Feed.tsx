@@ -1,11 +1,5 @@
-import Search from "./Search";
-
 const Feed = () => {
-  return (
-    <div>
-      <Search />
-    </div>
-  );
+  return <div className=""></div>;
 };
 
 export default Feed;

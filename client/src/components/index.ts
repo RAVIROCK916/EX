@@ -3,6 +3,7 @@ import MaxWidthWrapper from "./global/max-width-wrapper";
 import Loader from "./global/Loader";
 
 // main
+import Main from "./main/Main";
 import Sidebar from "./main/Sidebar";
 import Feed from "./main/Feed";
 
@@ -15,6 +16,7 @@ import { Toaster } from "sonner";
 export {
   MaxWidthWrapper,
   Loader,
+  Main,
   Sidebar,
   Feed,
   Button,

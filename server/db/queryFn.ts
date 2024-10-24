@@ -30,3 +30,11 @@ export const followUser = (userId: string, followerId: string) => {
 	);
 	return user;
 };
+
+export const unfollowUser = (userId: string, followerId: string) => {
+	const user = db.query(
+		"DELETE FROM follows WHERE user_id = $1 AND follower_id = $2",
+		[userId, followerId]
+	);
+	return user;
+};

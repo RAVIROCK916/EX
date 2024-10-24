@@ -15,7 +15,6 @@ import { z } from "zod";
 import { router } from "@/App";
 
 const SignUpForm = () => {
-  // const router = useRouter();
 
   // const { signUp, isLoaded, setActive } = useSignUp();
 
