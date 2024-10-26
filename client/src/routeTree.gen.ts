@@ -17,6 +17,7 @@ import { Route as RootLayoutIndexImport } from './routes/_root/_layout/index'
 import { Route as AuthLayoutSignupImport } from './routes/_auth/_layout/signup'
 import { Route as AuthLayoutLoginImport } from './routes/_auth/_layout/login'
 import { Route as RootLayoutUserUsernameImport } from './routes/_root/_layout/user/$username'
+import { Route as RootLayoutPostCreateImport } from './routes/_root/_layout/post/create'
 
 // Create/Update Routes
 
@@ -47,6 +48,11 @@ const AuthLayoutLoginRoute = AuthLayoutLoginImport.update({
 
 const RootLayoutUserUsernameRoute = RootLayoutUserUsernameImport.update({
   path: '/user/$username',
+  getParentRoute: () => RootLayoutRoute,
+} as any)
+
+const RootLayoutPostCreateRoute = RootLayoutPostCreateImport.update({
+  path: '/post/create',
   getParentRoute: () => RootLayoutRoute,
 } as any)
 
@@ -89,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RootLayoutIndexImport
       parentRoute: typeof RootLayoutImport
     }
+    '/_root/_layout/post/create': {
+      id: '/_root/_layout/post/create'
+      path: '/post/create'
+      fullPath: '/post/create'
+      preLoaderRoute: typeof RootLayoutPostCreateImport
+      parentRoute: typeof RootLayoutImport
+    }
     '/_root/_layout/user/$username': {
       id: '/_root/_layout/user/$username'
       path: '/user/$username'
@@ -117,11 +130,13 @@ const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(
 
 interface RootLayoutRouteChildren {
   RootLayoutIndexRoute: typeof RootLayoutIndexRoute
+  RootLayoutPostCreateRoute: typeof RootLayoutPostCreateRoute
   RootLayoutUserUsernameRoute: typeof RootLayoutUserUsernameRoute
 }
 
 const RootLayoutRouteChildren: RootLayoutRouteChildren = {
   RootLayoutIndexRoute: RootLayoutIndexRoute,
+  RootLayoutPostCreateRoute: RootLayoutPostCreateRoute,
   RootLayoutUserUsernameRoute: RootLayoutUserUsernameRoute,
 }
 
@@ -134,6 +149,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLayoutLoginRoute
   '/signup': typeof AuthLayoutSignupRoute
   '/': typeof RootLayoutIndexRoute
+  '/post/create': typeof RootLayoutPostCreateRoute
   '/user/$username': typeof RootLayoutUserUsernameRoute
 }
 
@@ -142,6 +158,7 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLayoutLoginRoute
   '/signup': typeof AuthLayoutSignupRoute
   '/': typeof RootLayoutIndexRoute
+  '/post/create': typeof RootLayoutPostCreateRoute
   '/user/$username': typeof RootLayoutUserUsernameRoute
 }
 
@@ -152,14 +169,21 @@ export interface FileRoutesById {
   '/_auth/_layout/login': typeof AuthLayoutLoginRoute
   '/_auth/_layout/signup': typeof AuthLayoutSignupRoute
   '/_root/_layout/': typeof RootLayoutIndexRoute
+  '/_root/_layout/post/create': typeof RootLayoutPostCreateRoute
   '/_root/_layout/user/$username': typeof RootLayoutUserUsernameRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/login' | '/signup' | '/' | '/user/$username'
+  fullPaths:
+    | ''
+    | '/login'
+    | '/signup'
+    | '/'
+    | '/post/create'
+    | '/user/$username'
   fileRoutesByTo: FileRoutesByTo
-  to: '' | '/login' | '/signup' | '/' | '/user/$username'
+  to: '' | '/login' | '/signup' | '/' | '/post/create' | '/user/$username'
   id:
     | '__root__'
     | '/_auth/_layout'
@@ -167,6 +191,7 @@ export interface FileRouteTypes {
     | '/_auth/_layout/login'
     | '/_auth/_layout/signup'
     | '/_root/_layout/'
+    | '/_root/_layout/post/create'
     | '/_root/_layout/user/$username'
   fileRoutesById: FileRoutesById
 }
@@ -208,6 +233,7 @@ export const routeTree = rootRoute
       "filePath": "_root/_layout.tsx",
       "children": [
         "/_root/_layout/",
+        "/_root/_layout/post/create",
         "/_root/_layout/user/$username"
       ]
     },
@@ -221,6 +247,10 @@ export const routeTree = rootRoute
     },
     "/_root/_layout/": {
       "filePath": "_root/_layout/index.tsx",
+      "parent": "/_root/_layout"
+    },
+    "/_root/_layout/post/create": {
+      "filePath": "_root/_layout/post/create.tsx",
       "parent": "/_root/_layout"
     },
     "/_root/_layout/user/$username": {
