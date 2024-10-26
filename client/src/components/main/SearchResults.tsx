@@ -21,7 +21,7 @@ const SearchResults = ({ loading, data }: Props) => {
   };
 
   return (
-    <div className="rounded-b-md border border-t-0 border-neutral-800">
+    <div className="absolute left-0 right-0 top-full rounded-b-md border border-t-0 border-neutral-800 bg-neutral-950">
       {loading ? (
         <div className="flex items-center justify-center py-3">
           <Loader />
@@ -30,15 +30,12 @@ const SearchResults = ({ loading, data }: Props) => {
         data.map((user: User) => (
           <div
             key={user.id}
-            className="flex cursor-pointer items-center justify-between rounded-md px-4 py-2 hover:bg-neutral-900"
+            className="flex cursor-pointer items-center justify-between px-4 py-2 hover:bg-neutral-900"
+            onClick={() => {
+              router.navigate({ to: `/user/${user.username}` });
+            }}
           >
-            <p
-              onClick={() => {
-                router.navigate({ to: `/user/${user.username}` });
-              }}
-            >
-              @{user.username}
-            </p>
+            <p>@{user.username}</p>
             {/* <Button size="sm" onMouseDown={() => handleClick(user)}>
 											Follow
 											</Button> */}

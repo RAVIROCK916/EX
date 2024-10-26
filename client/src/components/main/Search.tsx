@@ -48,7 +48,7 @@ const Search = () => {
   const fetchUsers = async () => {
     const res = await axios.get(`${SERVER_URL}/users`, {
       params: {
-        search: debouncedSearch,
+        search: debouncedSearch.trim(),
       },
     });
 
@@ -66,7 +66,7 @@ const Search = () => {
       <Input
         placeholder="Search..."
         className={`h-auto w-full px-4 py-2 text-base focus-visible:border-neutral-800 ${
-          showResults && "rounded-b-none"
+          search.trim() && "rounded-b-none"
         }`}
         value={search}
         onChange={(e) => handleChange(e)}
