@@ -29,16 +29,19 @@ const Feed = () => {
   }, []);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <h2 className="text-3xl font-bold">Posts</h2>
       {isLoading ? (
         <div className="flex items-center justify-center p-6">
           <Loader />
         </div>
       ) : (
-        <ul className="space-y-4">
-          {posts.length > 0 &&
-            posts.map((post) => <PostCard key={post.id} post={post} />)}
+        <ul className="space-y-6">
+          {posts.length > 0 ? (
+            posts.map((post) => <PostCard key={post.id} post={post} />)
+          ) : (
+            <div className="text-center">No posts found</div>
+          )}
         </ul>
       )}
     </div>

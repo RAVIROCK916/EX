@@ -1,14 +1,15 @@
 import { useRef } from "react";
 
-import { Images } from "lucide-react";
+import { Trash, Images } from "lucide-react";
 import { Button } from "../ui/button";
 
 type Props = {
   image: string | null;
   setImage: React.Dispatch<React.SetStateAction<string | null>>;
+  setFile: React.Dispatch<React.SetStateAction<File | null>>;
 };
 
-const FileUploader = ({ image, setImage }: Props) => {
+const ImageUploader = ({ image, setImage, setFile }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -17,22 +18,29 @@ const FileUploader = ({ image, setImage }: Props) => {
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const image = e.target.files?.[0];
-    if (image) {
-      setImage(URL.createObjectURL(image));
+    const file = e.target.files?.[0];
+    if (file) {
+      setFile(file);
+      setImage(URL.createObjectURL(file));
     }
   };
 
-  console.log(image);
+  const removeImage = () => {
+    setImage(null);
+  };
 
   return (
     <div className="flex h-80 cursor-pointer flex-col items-center justify-center gap-y-4 rounded-md bg-neutral-900">
       {image ? (
-        <img
-          src={image}
-          alt="uploaded image"
-          className="h-full w-full rounded-md object-cover"
-        />
+        <figure className="group relative overflow-hidden rounded-md">
+          <img src={image} alt="uploaded image" className="object-cover" />
+          <span
+            onClick={removeImage}
+            className="absolute right-4 top-4 hidden rounded-md bg-neutral-500 p-1.5 transition-all hover:bg-neutral-400 group-hover:block"
+          >
+            <Trash className="size-4" />
+          </span>
+        </figure>
       ) : (
         <>
           <Images size={64} strokeWidth="1" />
@@ -54,4 +62,4 @@ const FileUploader = ({ image, setImage }: Props) => {
     </div>
   );
 };
-export default FileUploader;
+export default ImageUploader;

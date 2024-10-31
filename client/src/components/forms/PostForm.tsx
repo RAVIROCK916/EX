@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { z } from "zod";
 
-import FileUploader from "../global/FileUploader";
+import ImageUploader from "../global/FileUploader";
 
 import { Button, Input, Label, Textarea } from "@/components";
 import { toast } from "sonner";
@@ -14,6 +14,7 @@ import { useNavigate } from "@tanstack/react-router";
 const PostForm = () => {
   const [caption, setCaption] = useState<string>("");
   const [image, setImage] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -24,6 +25,21 @@ const PostForm = () => {
     caption: z.string().min(1, "Caption is required"),
     image: z.string().url().nullable().optional(),
   });
+
+  const fileSchema = z
+    .instanceof(File)
+    .refine((file) => file.size <= 5 * 1024 * 1024, {
+      message: "File size should be 5MB or less",
+    })
+    .refine(
+      (file) =>
+        ["image/png", "image/jpeg", "image/gif", "image/svg+xml"].includes(
+          file.type,
+        ),
+      {
+        message: "Only .png, .jpg, .gif and .svg files are allowed",
+      },
+    );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +57,36 @@ const PostForm = () => {
       return;
     }
 
+    // image validation
+    const fileValidation = fileSchema.safeParse(file);
+    if (!fileValidation.success) {
+      toast.error(fileValidation.error.message);
+      return;
+    }
+
     setIsSubmitting(true);
+
+    // upload image to server
+    const fileData = new FormData();
+    fileData.append("image", file as File);
+
+    try {
+      const res = await protectedAPI.post(
+        `${SERVER_URL}/images/upload`,
+        fileData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+
+      formData.image = res.data.imageUrl;
+    } catch (error) {
+      console.log(error);
+    }
+
+    // submit post to server
 
     try {
       await protectedAPI.post(`${SERVER_URL}/posts`, formData);
@@ -70,7 +115,7 @@ const PostForm = () => {
       </div>
       <div className="space-y-2">
         <Label htmlFor="file">Add Photos</Label>
-        <FileUploader image={image} setImage={setImage} />
+        <ImageUploader image={image} setImage={setImage} setFile={setFile} />
       </div>
       <div className="space-y-2">
         <Label htmlFor="tags">Add Tags</Label>
