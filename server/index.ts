@@ -2,9 +2,9 @@ import express, { type Request, type Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import * as path from "path";
 
-import authRouter from "./routes/auth";
-import usersRouter from "./routes/users";
+import { authRouter, usersRouter, postsRouter, imagesRouter } from "./routes";
 
 import { logger } from "./middleware/logger";
 
@@ -33,6 +33,10 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
+app.use("/posts", postsRouter);
+app.use("/images", imagesRouter);
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.listen(PORT, () => {
 	console.log("Server is running on port 3000");
