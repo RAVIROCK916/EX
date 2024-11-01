@@ -16,6 +16,7 @@ import { Route as AuthLayoutImport } from './routes/_auth/_layout'
 import { Route as RootLayoutIndexImport } from './routes/_root/_layout/index'
 import { Route as AuthLayoutSignupImport } from './routes/_auth/_layout/signup'
 import { Route as AuthLayoutLoginImport } from './routes/_auth/_layout/login'
+import { Route as RootLayoutSearchIndexImport } from './routes/_root/_layout/search/index'
 import { Route as RootLayoutUserUsernameImport } from './routes/_root/_layout/user/$username'
 import { Route as RootLayoutPostCreateImport } from './routes/_root/_layout/post/create'
 
@@ -44,6 +45,11 @@ const AuthLayoutSignupRoute = AuthLayoutSignupImport.update({
 const AuthLayoutLoginRoute = AuthLayoutLoginImport.update({
   path: '/login',
   getParentRoute: () => AuthLayoutRoute,
+} as any)
+
+const RootLayoutSearchIndexRoute = RootLayoutSearchIndexImport.update({
+  path: '/search/',
+  getParentRoute: () => RootLayoutRoute,
 } as any)
 
 const RootLayoutUserUsernameRoute = RootLayoutUserUsernameImport.update({
@@ -109,6 +115,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RootLayoutUserUsernameImport
       parentRoute: typeof RootLayoutImport
     }
+    '/_root/_layout/search/': {
+      id: '/_root/_layout/search/'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof RootLayoutSearchIndexImport
+      parentRoute: typeof RootLayoutImport
+    }
   }
 }
 
@@ -132,12 +145,14 @@ interface RootLayoutRouteChildren {
   RootLayoutIndexRoute: typeof RootLayoutIndexRoute
   RootLayoutPostCreateRoute: typeof RootLayoutPostCreateRoute
   RootLayoutUserUsernameRoute: typeof RootLayoutUserUsernameRoute
+  RootLayoutSearchIndexRoute: typeof RootLayoutSearchIndexRoute
 }
 
 const RootLayoutRouteChildren: RootLayoutRouteChildren = {
   RootLayoutIndexRoute: RootLayoutIndexRoute,
   RootLayoutPostCreateRoute: RootLayoutPostCreateRoute,
   RootLayoutUserUsernameRoute: RootLayoutUserUsernameRoute,
+  RootLayoutSearchIndexRoute: RootLayoutSearchIndexRoute,
 }
 
 const RootLayoutRouteWithChildren = RootLayoutRoute._addFileChildren(
@@ -151,6 +166,7 @@ export interface FileRoutesByFullPath {
   '/': typeof RootLayoutIndexRoute
   '/post/create': typeof RootLayoutPostCreateRoute
   '/user/$username': typeof RootLayoutUserUsernameRoute
+  '/search': typeof RootLayoutSearchIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -160,6 +176,7 @@ export interface FileRoutesByTo {
   '/': typeof RootLayoutIndexRoute
   '/post/create': typeof RootLayoutPostCreateRoute
   '/user/$username': typeof RootLayoutUserUsernameRoute
+  '/search': typeof RootLayoutSearchIndexRoute
 }
 
 export interface FileRoutesById {
@@ -171,6 +188,7 @@ export interface FileRoutesById {
   '/_root/_layout/': typeof RootLayoutIndexRoute
   '/_root/_layout/post/create': typeof RootLayoutPostCreateRoute
   '/_root/_layout/user/$username': typeof RootLayoutUserUsernameRoute
+  '/_root/_layout/search/': typeof RootLayoutSearchIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -182,8 +200,16 @@ export interface FileRouteTypes {
     | '/'
     | '/post/create'
     | '/user/$username'
+    | '/search'
   fileRoutesByTo: FileRoutesByTo
-  to: '' | '/login' | '/signup' | '/' | '/post/create' | '/user/$username'
+  to:
+    | ''
+    | '/login'
+    | '/signup'
+    | '/'
+    | '/post/create'
+    | '/user/$username'
+    | '/search'
   id:
     | '__root__'
     | '/_auth/_layout'
@@ -193,6 +219,7 @@ export interface FileRouteTypes {
     | '/_root/_layout/'
     | '/_root/_layout/post/create'
     | '/_root/_layout/user/$username'
+    | '/_root/_layout/search/'
   fileRoutesById: FileRoutesById
 }
 
@@ -234,7 +261,8 @@ export const routeTree = rootRoute
       "children": [
         "/_root/_layout/",
         "/_root/_layout/post/create",
-        "/_root/_layout/user/$username"
+        "/_root/_layout/user/$username",
+        "/_root/_layout/search/"
       ]
     },
     "/_auth/_layout/login": {
@@ -255,6 +283,10 @@ export const routeTree = rootRoute
     },
     "/_root/_layout/user/$username": {
       "filePath": "_root/_layout/user/$username.tsx",
+      "parent": "/_root/_layout"
+    },
+    "/_root/_layout/search/": {
+      "filePath": "_root/_layout/search/index.tsx",
       "parent": "/_root/_layout"
     }
   }
