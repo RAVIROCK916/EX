@@ -1,4 +1,4 @@
-import protectedAxios from "@/lib/axios/auth";
+import protectedAPI from "@/lib/axios/auth";
 
 import type { Method } from "axios";
 
@@ -9,7 +9,7 @@ export const handleAuth = (
   token: string | null,
 ) => {
   try {
-    protectedAxios.request({
+    protectedAPI.request({
       method,
       url,
       data: body,

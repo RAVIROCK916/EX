@@ -9,25 +9,25 @@ import { toast } from "sonner";
 
 import { SERVER_URL } from "@/constants";
 
-const protectedAxios = axios.create({
+const protectedAPI = axios.create({
   baseURL: SERVER_URL,
   withCredentials: true,
 });
 
-// protectedAxios.interceptors.request.use(
-//   (config) => {
-//     console.log("config", config);
-//     return config;
-//   },
-//   (err) => {
-//     console.log(err);
-//   },
-// );
+protectedAPI.interceptors.request.use(
+  (config) => {
+    const token = store.getState().auth.token;
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (err) => Promise.reject(err),
+);
 
-protectedAxios.interceptors.response.use(
+protectedAPI.interceptors.response.use(
   (response) => response,
   async (err) => {
-    console.log(err);
     switch (err.response.status) {
       case 401:
         return err;
@@ -40,7 +40,7 @@ protectedAxios.interceptors.response.use(
 
           originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
 
-          return protectedAxios(originalRequest);
+          return protectedAPI(originalRequest);
         } catch (err) {
           toast.error("Not logged in");
           handleLogout();
@@ -50,4 +50,4 @@ protectedAxios.interceptors.response.use(
   },
 );
 
-export default protectedAxios;
+export default protectedAPI;
