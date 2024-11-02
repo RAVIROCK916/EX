@@ -10,7 +10,7 @@ export default async function isAuthenticated(
 
 	if (!accessToken) {
 		return res
-			.status(401)
+			.status(403)
 			.send({ message: "Unauthorized! Access token required!!!" });
 	}
 

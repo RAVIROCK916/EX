@@ -109,6 +109,10 @@ export const signup = async (req: Request, res: Response) => {
 	}
 };
 
+export const auth = (req: Request, res: Response) => {
+	res.status(200).send({ message: "Authenticated" });
+};
+
 export const refreshToken = (req: Request, res: Response) => {
 	const refreshToken = req.cookies.refreshToken;
 	if (!refreshToken) {
