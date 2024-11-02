@@ -8,7 +8,7 @@ const Sidebar = () => {
   const { pathname } = useLocation();
 
   return (
-    <aside className="flex h-screen flex-col justify-between">
+    <aside className="sticky top-0 flex h-screen flex-col justify-between">
       <section className="space-y-3">
         {sidebarLinks.map((link) => {
           const isActive = link.href === pathname;
@@ -21,7 +21,7 @@ const Sidebar = () => {
               <link.icon
                 className={`h-6 w-6 stroke-[1.5px] ${isActive && "!stroke-2"}`}
               />
-              <p className="hidden text-lg md:block">{link.label}</p>
+              <p className="hidden md:block">{link.label}</p>
             </Link>
           );
         })}

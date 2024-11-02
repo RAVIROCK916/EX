@@ -1,10 +1,7 @@
 import User from "@/types/user";
 
-import { Button, Loader } from "@/components";
-import { useSelector } from "react-redux";
+import { Loader } from "@/components";
 
-import { RootState } from "@/state/store";
-import { handleAuth } from "@/utils/auth/handleAuth";
 import { ArrowUpLeft } from "phosphor-react";
 import { router } from "@/App";
 
@@ -14,12 +11,6 @@ type Props = {
 };
 
 const SearchResults = ({ loading, data }: Props) => {
-  const token = useSelector((state: RootState) => state.auth.token);
-
-  const handleClick = (user: User) => {
-    handleAuth("POST", "/users/follow", { userId: user.id }, token);
-  };
-
   return (
     <div className="absolute left-0 right-0 top-full rounded-b-md border border-t-0 border-neutral-800 bg-neutral-950">
       {loading ? (
