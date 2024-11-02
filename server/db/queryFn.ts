@@ -38,3 +38,22 @@ export const unfollowUser = (userId: string, followerId: string) => {
 	);
 	return user;
 };
+
+export const insertIntoPosts = (
+	userId: string,
+	caption: string,
+	image: string
+) => {
+	const post = db.query(
+		"INSERT INTO posts (user_id, caption, image_url) VALUES ($1, $2, $3)",
+		[userId, caption, image]
+	);
+	return post;
+};
+
+export const getRecentPosts = () => {
+	const posts = db.query(
+		"SELECT * FROM user_posts ORDER BY created_at DESC LIMIT 10"
+	);
+	return posts;
+};
