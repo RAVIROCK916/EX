@@ -1,19 +1,23 @@
 import { Request, Response } from "express";
+
 import {
-	getUsersBySearch,
-	followUserById,
-	unfollowUserById,
+	getUsersBySearchService,
+	followUserService,
+	unfollowUserService,
 } from "../services/users";
 
-export const fetchUsers = async (req: Request, res: Response) => {
+export const getUsersBySearchController = async (
+	req: Request,
+	res: Response
+) => {
 	const { search } = req.query;
 	console.log("search", search);
 
-	const users = await getUsersBySearch(String(search));
+	const users = await getUsersBySearchService(String(search));
 	res.json(users.rows);
 };
 
-export const followUser = async (req: Request, res: Response) => {
+export const followUserController = async (req: Request, res: Response) => {
 	const { userId } = req.body;
 	const followerId = req.user;
 
@@ -22,7 +26,7 @@ export const followUser = async (req: Request, res: Response) => {
 	}
 
 	try {
-		followUserById(userId, followerId);
+		followUserService(userId, followerId);
 
 		res.send({ message: "User followed successfully" });
 	} catch (err) {
@@ -30,7 +34,7 @@ export const followUser = async (req: Request, res: Response) => {
 	}
 };
 
-export const unfollowUser = async (req: Request, res: Response) => {
+export const unfollowUserController = async (req: Request, res: Response) => {
 	const { userId } = req.body;
 	const followerId = req.user;
 
@@ -39,7 +43,7 @@ export const unfollowUser = async (req: Request, res: Response) => {
 	}
 
 	try {
-		unfollowUserById(userId, followerId);
+		unfollowUserService(userId, followerId);
 
 		res.send({ message: "User unfollowed successfully" });
 	} catch (err) {
