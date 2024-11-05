@@ -1,10 +1,12 @@
 // global
 import MaxWidthWrapper from "./global/max-width-wrapper";
 import Loader from "./global/Loader";
+import DatePicker from "./global/DatePicker";
 
 // main
 import Main from "./main/Main";
 import Sidebar from "./main/Sidebar";
+import RightSidebar from "./main/RightSidebar";
 import Feed from "./main/Feed";
 
 // ui
@@ -17,12 +19,14 @@ import { Toaster } from "sonner";
 export {
   MaxWidthWrapper,
   Loader,
+  DatePicker,
   Main,
   Sidebar,
+  RightSidebar,
   Feed,
   Button,
   Input,
-	Label,
-	Textarea,
+  Label,
+  Textarea,
   Toaster,
 };

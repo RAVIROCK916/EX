@@ -66,7 +66,7 @@ const Search = () => {
       <Input
         placeholder="Search..."
         className={`h-auto w-full px-4 py-2 text-base focus-visible:border-neutral-800 ${
-          search.trim() && "rounded-b-none"
+          search.trim() && showResults && "rounded-b-none"
         }`}
         value={search}
         onChange={(e) => handleChange(e)}
