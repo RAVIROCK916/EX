@@ -2,7 +2,11 @@ import jwt, { VerifyOptions } from "jsonwebtoken";
 import type { Request, Response } from "express";
 
 import { getUsersByUsername } from "../db/queryFn";
-import { createNewUser, getUserByUsername } from "../services/auth";
+import {
+	authService,
+	createNewUser,
+	getUserByUsername,
+} from "../services/auth";
 
 import bcrypt from "bcrypt";
 import { generateTokens } from "../utils/generateTokens";
@@ -109,8 +113,19 @@ export const signup = async (req: Request, res: Response) => {
 	}
 };
 
-export const auth = (req: Request, res: Response) => {
-	res.status(200).send({ message: "Authenticated" });
+export const auth = async (req: Request, res: Response) => {
+	const userId = req.user;
+
+	const user = await authService(userId);
+	if (!user) {
+		return res.status(401).send({ message: "Unauthorized" });
+	}
+
+	res.status(200).send({
+		message: "Authenticated",
+		id: userId,
+		username: user.rows[0].username,
+	});
 };
 
 export const refreshToken = (req: Request, res: Response) => {

@@ -11,13 +11,33 @@ export const insertIntoUsers = async (
 	);
 };
 
+export const updateUser = (
+	id: string,
+	name: string,
+	email: string,
+	bio: string,
+	gender: string,
+	birthDate: string,
+	personalLink: string
+) => {
+	db.query(
+		"UPDATE users SET name = $1, email = $2, bio = $3, gender = $4, birth_date = $5, personal_link = $6 WHERE id = $7",
+		[name, email, bio, gender, birthDate, personalLink, id]
+	);
+};
+
+export const getUserById = (id: string) => {
+	const user = db.query("SELECT * FROM user_view WHERE id = $1", [id]);
+	return user;
+};
+
 export const getUsersByUsername = (username: string) => {
 	const users = db.query("SELECT * FROM users WHERE username = $1", [username]);
 	return users;
 };
 
 export const searchUsers = (search: string) => {
-	const users = db.query("SELECT * FROM users WHERE username LIKE $1", [
+	const users = db.query("SELECT * FROM user_view WHERE username LIKE $1", [
 		`%${search}%`,
 	]);
 	return users;
@@ -25,16 +45,32 @@ export const searchUsers = (search: string) => {
 
 export const followUser = (userId: string, followerId: string) => {
 	const user = db.query(
-		"INSERT INTO follows (user_id, follower_id) VALUES ($1, $2)",
+		"INSERT INTO followers (user_id, follower_id) VALUES ($1, $2)",
 		[userId, followerId]
+	);
+	db.query(
+		"UPDATE users SET followers_count = followers_count + 1 WHERE id = $1",
+		[userId]
+	);
+	db.query(
+		"UPDATE users SET following_count = following_count + 1 WHERE id = $1",
+		[followerId]
 	);
 	return user;
 };
 
 export const unfollowUser = (userId: string, followerId: string) => {
 	const user = db.query(
-		"DELETE FROM follows WHERE user_id = $1 AND follower_id = $2",
+		"DELETE FROM followers WHERE user_id = $1 AND follower_id = $2",
 		[userId, followerId]
+	);
+	db.query(
+		"UPDATE users SET followers_count = followers_count - 1 WHERE id = $1",
+		[userId]
+	);
+	db.query(
+		"UPDATE users SET following_count = following_count - 1 WHERE id = $1",
+		[followerId]
 	);
 	return user;
 };
