@@ -17,7 +17,9 @@ import { Route as RootLayoutIndexImport } from './routes/_root/_layout/index'
 import { Route as AuthLayoutSignupImport } from './routes/_auth/_layout/signup'
 import { Route as AuthLayoutLoginImport } from './routes/_auth/_layout/login'
 import { Route as RootLayoutSearchIndexImport } from './routes/_root/_layout/search/index'
+import { Route as RootLayoutProfileIndexImport } from './routes/_root/_layout/profile/index'
 import { Route as RootLayoutUserUsernameImport } from './routes/_root/_layout/user/$username'
+import { Route as RootLayoutProfileEditImport } from './routes/_root/_layout/profile/edit'
 import { Route as RootLayoutPostCreateImport } from './routes/_root/_layout/post/create'
 
 // Create/Update Routes
@@ -52,8 +54,18 @@ const RootLayoutSearchIndexRoute = RootLayoutSearchIndexImport.update({
   getParentRoute: () => RootLayoutRoute,
 } as any)
 
+const RootLayoutProfileIndexRoute = RootLayoutProfileIndexImport.update({
+  path: '/profile/',
+  getParentRoute: () => RootLayoutRoute,
+} as any)
+
 const RootLayoutUserUsernameRoute = RootLayoutUserUsernameImport.update({
   path: '/user/$username',
+  getParentRoute: () => RootLayoutRoute,
+} as any)
+
+const RootLayoutProfileEditRoute = RootLayoutProfileEditImport.update({
+  path: '/profile/edit',
   getParentRoute: () => RootLayoutRoute,
 } as any)
 
@@ -108,11 +120,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RootLayoutPostCreateImport
       parentRoute: typeof RootLayoutImport
     }
+    '/_root/_layout/profile/edit': {
+      id: '/_root/_layout/profile/edit'
+      path: '/profile/edit'
+      fullPath: '/profile/edit'
+      preLoaderRoute: typeof RootLayoutProfileEditImport
+      parentRoute: typeof RootLayoutImport
+    }
     '/_root/_layout/user/$username': {
       id: '/_root/_layout/user/$username'
       path: '/user/$username'
       fullPath: '/user/$username'
       preLoaderRoute: typeof RootLayoutUserUsernameImport
+      parentRoute: typeof RootLayoutImport
+    }
+    '/_root/_layout/profile/': {
+      id: '/_root/_layout/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof RootLayoutProfileIndexImport
       parentRoute: typeof RootLayoutImport
     }
     '/_root/_layout/search/': {
@@ -144,14 +170,18 @@ const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(
 interface RootLayoutRouteChildren {
   RootLayoutIndexRoute: typeof RootLayoutIndexRoute
   RootLayoutPostCreateRoute: typeof RootLayoutPostCreateRoute
+  RootLayoutProfileEditRoute: typeof RootLayoutProfileEditRoute
   RootLayoutUserUsernameRoute: typeof RootLayoutUserUsernameRoute
+  RootLayoutProfileIndexRoute: typeof RootLayoutProfileIndexRoute
   RootLayoutSearchIndexRoute: typeof RootLayoutSearchIndexRoute
 }
 
 const RootLayoutRouteChildren: RootLayoutRouteChildren = {
   RootLayoutIndexRoute: RootLayoutIndexRoute,
   RootLayoutPostCreateRoute: RootLayoutPostCreateRoute,
+  RootLayoutProfileEditRoute: RootLayoutProfileEditRoute,
   RootLayoutUserUsernameRoute: RootLayoutUserUsernameRoute,
+  RootLayoutProfileIndexRoute: RootLayoutProfileIndexRoute,
   RootLayoutSearchIndexRoute: RootLayoutSearchIndexRoute,
 }
 
@@ -165,7 +195,9 @@ export interface FileRoutesByFullPath {
   '/signup': typeof AuthLayoutSignupRoute
   '/': typeof RootLayoutIndexRoute
   '/post/create': typeof RootLayoutPostCreateRoute
+  '/profile/edit': typeof RootLayoutProfileEditRoute
   '/user/$username': typeof RootLayoutUserUsernameRoute
+  '/profile': typeof RootLayoutProfileIndexRoute
   '/search': typeof RootLayoutSearchIndexRoute
 }
 
@@ -175,7 +207,9 @@ export interface FileRoutesByTo {
   '/signup': typeof AuthLayoutSignupRoute
   '/': typeof RootLayoutIndexRoute
   '/post/create': typeof RootLayoutPostCreateRoute
+  '/profile/edit': typeof RootLayoutProfileEditRoute
   '/user/$username': typeof RootLayoutUserUsernameRoute
+  '/profile': typeof RootLayoutProfileIndexRoute
   '/search': typeof RootLayoutSearchIndexRoute
 }
 
@@ -187,7 +221,9 @@ export interface FileRoutesById {
   '/_auth/_layout/signup': typeof AuthLayoutSignupRoute
   '/_root/_layout/': typeof RootLayoutIndexRoute
   '/_root/_layout/post/create': typeof RootLayoutPostCreateRoute
+  '/_root/_layout/profile/edit': typeof RootLayoutProfileEditRoute
   '/_root/_layout/user/$username': typeof RootLayoutUserUsernameRoute
+  '/_root/_layout/profile/': typeof RootLayoutProfileIndexRoute
   '/_root/_layout/search/': typeof RootLayoutSearchIndexRoute
 }
 
@@ -199,7 +235,9 @@ export interface FileRouteTypes {
     | '/signup'
     | '/'
     | '/post/create'
+    | '/profile/edit'
     | '/user/$username'
+    | '/profile'
     | '/search'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -208,7 +246,9 @@ export interface FileRouteTypes {
     | '/signup'
     | '/'
     | '/post/create'
+    | '/profile/edit'
     | '/user/$username'
+    | '/profile'
     | '/search'
   id:
     | '__root__'
@@ -218,7 +258,9 @@ export interface FileRouteTypes {
     | '/_auth/_layout/signup'
     | '/_root/_layout/'
     | '/_root/_layout/post/create'
+    | '/_root/_layout/profile/edit'
     | '/_root/_layout/user/$username'
+    | '/_root/_layout/profile/'
     | '/_root/_layout/search/'
   fileRoutesById: FileRoutesById
 }
@@ -261,7 +303,9 @@ export const routeTree = rootRoute
       "children": [
         "/_root/_layout/",
         "/_root/_layout/post/create",
+        "/_root/_layout/profile/edit",
         "/_root/_layout/user/$username",
+        "/_root/_layout/profile/",
         "/_root/_layout/search/"
       ]
     },
@@ -281,8 +325,16 @@ export const routeTree = rootRoute
       "filePath": "_root/_layout/post/create.tsx",
       "parent": "/_root/_layout"
     },
+    "/_root/_layout/profile/edit": {
+      "filePath": "_root/_layout/profile/edit.tsx",
+      "parent": "/_root/_layout"
+    },
     "/_root/_layout/user/$username": {
       "filePath": "_root/_layout/user/$username.tsx",
+      "parent": "/_root/_layout"
+    },
+    "/_root/_layout/profile/": {
+      "filePath": "_root/_layout/profile/index.tsx",
       "parent": "/_root/_layout"
     },
     "/_root/_layout/search/": {

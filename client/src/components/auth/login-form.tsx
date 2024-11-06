@@ -42,7 +42,7 @@ const LoginForm = () => {
 
     if (!formValidation.success) {
       formValidation.error.errors.forEach((error) => {
-        toast.error(error.message);
+        toast.error(`${error.path}: ${error.message}`);
       });
       return;
     }

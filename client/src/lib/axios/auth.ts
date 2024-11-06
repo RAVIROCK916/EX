@@ -5,7 +5,6 @@ import refreshToken from "@/utils/auth/refreshToken";
 
 import { setToken } from "@/state/reducers/auth";
 import { handleLogout } from "@/utils/auth/handleLogout";
-import { toast } from "sonner";
 
 import { SERVER_URL } from "@/constants";
 
@@ -42,7 +41,6 @@ protectedAPI.interceptors.response.use(
 
           return protectedAPI(originalRequest);
         } catch (err) {
-          toast.error("Not logged in");
           handleLogout();
           return err;
         }

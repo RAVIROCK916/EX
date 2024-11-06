@@ -13,9 +13,10 @@ import { toast } from "sonner";
 import { SERVER_URL } from "../../constants";
 import { z } from "zod";
 import { router } from "@/App";
+import { useDispatch } from "react-redux";
+import { setToken } from "@/state/reducers/auth";
 
 const SignUpForm = () => {
-
   // const { signUp, isLoaded, setActive } = useSignUp();
 
   const [username, setUsername] = useState<string>("");
@@ -26,6 +27,8 @@ const SignUpForm = () => {
   const [isVerifying, setIsVerifying] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const dispatch = useDispatch();
 
   const formData = { username, email, password };
 
@@ -51,7 +54,7 @@ const SignUpForm = () => {
 
     if (!formValidation.success) {
       formValidation.error.errors.forEach((error) => {
-        toast.error(error.message);
+        toast.error(`${error.path}: ${error.message}`);
       });
       return;
     }
@@ -61,7 +64,7 @@ const SignUpForm = () => {
     // send signup request to server
 
     try {
-      await axios.post(
+      const res = await axios.post(
         `${SERVER_URL}/auth/signup`,
         {
           username: username,
@@ -72,6 +75,8 @@ const SignUpForm = () => {
       );
 
       toast.success("Verification code sent to your email");
+
+      dispatch(setToken(res.data.token));
 
       router.navigate({ to: "/" });
     } catch (error: any) {

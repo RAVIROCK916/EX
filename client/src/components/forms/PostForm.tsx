@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { z } from "zod";
 
-import ImageUploader from "../global/FileUploader";
+import ImageUploader from "../global/ImageUploader";
 
 import { Button, Input, Label, Textarea } from "@/components";
 import { toast } from "sonner";
@@ -52,7 +52,7 @@ const PostForm = () => {
       formValidation.error.errors.forEach((error) => {
         console.log(error.message);
 
-        toast.error(error.message);
+        toast.error(`${error.path}: ${error.message}`);
       });
       return;
     }
