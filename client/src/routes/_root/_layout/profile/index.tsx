@@ -44,7 +44,7 @@ function ProfilePage() {
         <div className="flex justify-between">
           <div>
             <h2 className="text-2xl font-semibold">{profile.name}</h2>
-            <p className="text-tertiary-foreground tracking-wide">
+            <p className="tracking-wide text-tertiary-foreground">
               @{profile.username}
             </p>
           </div>
@@ -56,7 +56,7 @@ function ProfilePage() {
           <p className="text-base font-normal">{profile.bio}</p>
         </div>
         <div>
-          <div className="text-tertiary-foreground flex flex-wrap gap-x-6 gap-y-1 text-sm *:flex *:items-center *:gap-1">
+          <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-tertiary-foreground *:flex *:items-center *:gap-1">
             {profile.location && (
               <p>
                 <MapPin className="size-4" />
@@ -87,11 +87,11 @@ function ProfilePage() {
         </div>
         <div className="flex gap-x-4">
           <p>
-            <span className="font-semibold">{profile.following_count}</span>
+            <span>{profile.following_count}</span>
             <span className="text-tertiary-foreground"> Following</span>
           </p>
           <p>
-            <span className="font-semibold">{profile.followers_count}</span>
+            <span>{profile.followers_count}</span>
             <span className="text-tertiary-foreground"> Followers</span>
           </p>
         </div>
