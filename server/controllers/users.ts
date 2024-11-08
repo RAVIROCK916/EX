@@ -29,25 +29,23 @@ export const saveProfileController = async (req: Request, res: Response) => {
 	const { name, email, bio, gender, birth_date, location, personal_link } =
 		req.body;
 
+	// Filter out undefined values
+	const validUpdates = Object.fromEntries(
+		Object.entries(req.body).filter(([_, value]) => value !== undefined)
+	);
+
+	if (Object.keys(validUpdates).length === 0) {
+		return;
+	}
+
 	console.log(req.body);
 
 	try {
-		await saveProfileService(
-			req.user,
-			name,
-			email,
-			bio,
-			gender,
-			birth_date,
-			location,
-			personal_link
-		);
-		res.status(200).send({ message: "Profile saved successfully" });
+		await saveProfileService(req.user, validUpdates);
+		return res.status(200).send({ message: "Profile saved successfully" });
 	} catch (err) {
-		res.status(500).send({ error: "Failed to save profile" });
+		return res.status(500).send({ error: "Failed to save profile" });
 	}
-
-	return;
 };
 
 export const followUserController = async (req: Request, res: Response) => {

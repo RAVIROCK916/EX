@@ -6,6 +6,7 @@ import {
 	unfollowUser,
 	updateUser,
 } from "../db/queryFn";
+import User from "../types/user";
 
 export const getUsersBySearchService = async (search: string) => {
 	const users = await searchUsers(search);
@@ -17,40 +18,12 @@ export const getProfileService = async (userId: string) => {
 	return user;
 };
 
-export const saveProfileService = async (
-	id: string,
-	fullname: string,
-	email: string,
-	bio: string,
-	gender: string,
-	birth_date: string,
-	location: string,
-	personal_link: string
-) => {
-	const validUpdates = {
-		name: fullname,
-		email,
-		bio,
-		gender,
-		birth_date,
-		location,
-		personal_link,
-	};
-
-	// Filter out undefined values
-	const filteredUpdates = Object.fromEntries(
-		Object.entries(validUpdates).filter(([_, value]) => value !== undefined)
-	);
-
-	if (Object.keys(filteredUpdates).length === 0) {
-		return;
-	}
-
+export const saveProfileService = async (id: string, data: any) => {
 	// Generate the update query parameters
-	const setStatements = Object.keys(filteredUpdates).map(
+	const setStatements = Object.keys(data).map(
 		(key, index) => `${key} = $${index + 1}`
 	);
-	const values = Object.values(filteredUpdates);
+	const values = Object.values(data);
 	values.push(id);
 
 	const query = `

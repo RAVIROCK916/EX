@@ -125,6 +125,7 @@ export const auth = async (req: Request, res: Response) => {
 		message: "Authenticated",
 		id: userId,
 		username: user.rows[0].username,
+		profile_picture_url: user.rows[0].profile_picture_url,
 	});
 };
 

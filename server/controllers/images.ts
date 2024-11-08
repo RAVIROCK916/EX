@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CLIENT_URL } from "../constants";
+import { SERVER_URL } from "../constants";
 
 export const uploadImageController = async (req: Request, res: Response) => {
 	try {
@@ -10,7 +10,7 @@ export const uploadImageController = async (req: Request, res: Response) => {
 		console.log({ filename, originalname, mimetype, size });
 		return res
 			.status(200)
-			.json({ imageUrl: `http://localhost:3000/uploads/${filename}` });
+			.json({ imageUrl: `${SERVER_URL}/uploads/${filename}` });
 	} catch (error) {
 		console.log(error);
 	}
