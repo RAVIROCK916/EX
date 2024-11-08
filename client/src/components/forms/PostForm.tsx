@@ -41,6 +41,14 @@ const PostForm = () => {
       },
     );
 
+  const handleImage = (image: string | null) => {
+    setImage(image);
+  };
+
+  const handleFile = (file: File) => {
+    setFile(file);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log({ formData });
@@ -115,7 +123,11 @@ const PostForm = () => {
       </div>
       <div className="space-y-2">
         <Label htmlFor="file">Add Photos</Label>
-        <ImageUploader image={image} setImage={setImage} setFile={setFile} />
+        <ImageUploader
+          value={image}
+          handleImage={handleImage}
+          handleFile={handleFile}
+        />
       </div>
       <div className="space-y-2">
         <Label htmlFor="tags">Add Tags</Label>

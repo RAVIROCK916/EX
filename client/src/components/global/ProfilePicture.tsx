@@ -11,6 +11,7 @@ export function ProfilePicture({ img_url, className }: ProfilePictureProps) {
       <AvatarImage
         src={img_url || "https://github.com/shadcn.png"}
         alt="@shadcn"
+        className="object-cover"
       />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>

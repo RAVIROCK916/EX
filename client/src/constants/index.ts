@@ -2,7 +2,7 @@ import {
   Bell,
   Bookmark,
   ImagePlus,
-  MessageSquare,
+  Mail,
   Search,
   TvMinimal,
   UserRound,
@@ -29,7 +29,7 @@ export const sidebarLinks = [
   },
   {
     label: "Messages",
-    icon: MessageSquare,
+    icon: Mail,
     href: "/messages",
   },
   {
