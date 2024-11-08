@@ -9,14 +9,16 @@ import { RootState } from "@/state/store";
 
 const Sidebar = () => {
   const { pathname } = useLocation();
-  const { username } = useSelector((state: RootState) => state.profile);
+  const { username, profile_picture_url } = useSelector(
+    (state: RootState) => state.profile,
+  );
 
   return (
-    <aside className="sticky top-0 hidden h-screen sm:block">
+    <aside className="sticky top-0 hidden h-screen p-6 sm:block">
       <div className="flex h-full max-w-80 flex-col justify-between">
         <div className="space-y-10">
           <div className="m-5 flex flex-col justify-center gap-y-3">
-            <ProfilePicture className="size-20" />
+            <ProfilePicture className="size-20" img_url={profile_picture_url} />
             {/* <p className="text-sm tracking-wide">@{username}</p> */}
           </div>
           <section className="space-y-2">

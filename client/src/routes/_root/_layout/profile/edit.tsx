@@ -26,6 +26,7 @@ import {
 import protectedAPI from "@/lib/axios/auth";
 import { SERVER_URL } from "@/constants";
 import { toast } from "sonner";
+import uploadFile from "@/utils/uploadFile";
 
 export const Route = createFileRoute("/_root/_layout/profile/edit")({
   component: EditProfilePage,
@@ -40,28 +41,52 @@ enum Gender {
 function EditProfilePage() {
   const navigate = useNavigate();
 
+  const [images, setImages] = useState<{
+    profileImage: File | null;
+    coverImage: File | null;
+  }>({
+    profileImage: null,
+    coverImage: null,
+  });
+
+  console.log({ images });
+
+  const handleProfileImage = (image: File | null) => {
+    setImages({ ...images, profileImage: image });
+  };
+
+  const handleCoverImage = (image: File | null) => {
+    setImages({ ...images, coverImage: image });
+  };
+
   const state = useRouterState({ select: (s) => s.location.state });
   const { profile } = state;
-  console.log(profile);
 
   const [form, setForm] = useState<FormData>({
-    name: profile?.name || "",
+    name: profile?.name || undefined,
     email: profile?.email || undefined,
     bio: profile?.bio || undefined,
     gender: (profile?.gender as Gender) || undefined,
     birth_date: profile?.birth_date || undefined,
     location: profile?.location || undefined,
     personal_link: profile?.personal_link || undefined,
+    profile_picture_url: profile?.profile_picture_url || undefined,
+    cover_picture_url: profile?.cover_picture_url || undefined,
   });
 
   const formSchema = z.object({
-    name: z.string().min(3, "Name should be at least 3 characters"),
+    name: z.string().min(3, "Name should be at least 3 characters").optional(),
     email: z.string().email("Invalid email").optional(),
     bio: z.string().optional(),
     gender: z.nativeEnum(Gender).optional(),
     birth_date: z.string().optional(),
     location: z.string().optional(),
     personal_link: z.string().url("Invalid URL").optional(),
+    profile_picture_url: z
+      .string()
+      .url("Please upload proper profile image")
+      .optional(),
+    cover_picture_url: z.string().url("Invalid URL").optional(),
   });
 
   type FormData = z.infer<typeof formSchema>;
@@ -89,6 +114,20 @@ function EditProfilePage() {
           toast.error(`${error.path}: ${error.message}`);
         });
       return;
+    }
+
+    // upload images
+    if (!images.profileImage) {
+      toast.error("Please upload profile image");
+      return;
+    }
+
+    const profileImageUrl = await uploadFile(images.profileImage);
+    form.profile_picture_url = profileImageUrl;
+
+    if (images.coverImage) {
+      const coverImageUrl = await uploadFile(images.coverImage);
+      form.cover_picture_url = coverImageUrl;
     }
 
     // submit form
@@ -168,7 +207,11 @@ function EditProfilePage() {
         </div>
         <div>
           <Label>Profile Picture</Label>
-          <FileUploader />
+          <FileUploader handleFile={handleProfileImage} />
+        </div>
+        <div>
+          <Label>Cover Picture</Label>
+          <FileUploader handleFile={handleCoverImage} />
         </div>
         <div>
           <Label htmlFor="location">Location</Label>

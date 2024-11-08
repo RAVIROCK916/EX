@@ -1,4 +1,5 @@
 import { Button } from "@/components";
+import FullBleed from "@/components/global/FullBleed";
 import { SERVER_URL } from "@/constants";
 import protectedAPI from "@/lib/axios/auth";
 import User from "@/types/user";
@@ -28,19 +29,23 @@ function ProfilePage() {
   }, []);
 
   return profile ? (
-    <div className="space-y-4">
-      <div className="flex items-center gap-4">
+    <div className="space-y-8">
+      {/* <div className="flex items-center gap-4">
         <span className="cursor-pointer" onClick={() => history.back()}>
           <ArrowLeft className="h-6 w-6" />
         </span>
         <h1 className="text-2xl font-bold">Profile</h1>
-      </div>
-      <div>
-        <figure className="h-48 w-full bg-neutral-500">
-          <img src="" alt="" />
+      </div> */}
+      <FullBleed>
+        <figure className="h-48 w-full overflow-hidden bg-neutral-800">
+          <img
+            src={profile.cover_picture_url}
+            alt=""
+            className="object-cover object-center"
+          />
         </figure>
-      </div>
-      <div className="space-y-2 text-sm font-light">
+      </FullBleed>
+      <div className="space-y-3 text-sm font-light">
         <div className="flex justify-between">
           <div>
             <h2 className="text-2xl font-semibold">{profile.name}</h2>
