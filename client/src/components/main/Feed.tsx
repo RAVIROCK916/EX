@@ -38,7 +38,11 @@ const Feed = () => {
       ) : (
         <ul className="space-y-6">
           {posts.length > 0 ? (
-            posts.map((post) => <PostCard key={post.id} post={post} />)
+            posts.map((post) => (
+              <li key={post.id}>
+                <PostCard post={post} />
+              </li>
+            ))
           ) : (
             <div className="text-center">No posts found</div>
           )}

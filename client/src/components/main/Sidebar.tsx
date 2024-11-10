@@ -17,7 +17,7 @@ const Sidebar = () => {
     <aside className="sticky top-0 hidden h-screen p-6 sm:block">
       <div className="flex h-full max-w-80 flex-col justify-between">
         <div className="space-y-10">
-          <div className="m-5 flex flex-col justify-center gap-y-3">
+          <div className="m-4 flex flex-col justify-center gap-y-3">
             <ProfilePicture className="size-20" img_url={profile_picture_url} />
             {/* <p className="text-sm tracking-wide">@{username}</p> */}
           </div>

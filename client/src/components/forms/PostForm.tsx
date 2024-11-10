@@ -39,7 +39,8 @@ const PostForm = () => {
       {
         message: "Only .png, .jpg, .gif and .svg files are allowed",
       },
-    );
+    )
+    .optional();
 
   const handleImage = (image: string | null) => {
     setImage(image);
@@ -66,10 +67,12 @@ const PostForm = () => {
     }
 
     // image validation
-    const fileValidation = fileSchema.safeParse(file);
-    if (!fileValidation.success) {
-      toast.error(fileValidation.error.message);
-      return;
+    if (image) {
+      const fileValidation = fileSchema.safeParse(file);
+      if (!fileValidation.success) {
+        toast.error(fileValidation.error.errors[0].message);
+        return;
+      }
     }
 
     setIsSubmitting(true);
