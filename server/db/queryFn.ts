@@ -1,5 +1,7 @@
 import db from "../db";
 
+// User queries
+
 export const insertIntoUsers = async (
 	username: string,
 	email: string,
@@ -75,6 +77,8 @@ export const unfollowUser = (userId: string, followerId: string) => {
 	return user;
 };
 
+// Post queries
+
 export const insertIntoPosts = (
 	userId: string,
 	caption: string,
@@ -92,4 +96,31 @@ export const getRecentPosts = () => {
 		"SELECT * FROM user_posts ORDER BY created_at DESC LIMIT 10"
 	);
 	return posts;
+};
+
+export const getPostsByUser = (id: string) => {
+	const posts = db.query("SELECT * FROM user_posts WHERE user_id = $1", [id]);
+	return posts;
+};
+
+// Likes queries
+
+export const insertIntoLikes = (postId: string, userId: string) => {
+	db.query("INSERT INTO likes (post_id, user_id) VALUES ($1, $2)", [
+		postId,
+		userId,
+	]);
+	db.query("UPDATE posts SET no_of_likes = no_of_likes + 1 WHERE id = $1", [
+		postId,
+	]);
+};
+
+export const deleteFromLikes = (postId: string, userId: string) => {
+	db.query("DELETE FROM likes WHERE post_id = $1 AND user_id = $2", [
+		postId,
+		userId,
+	]);
+	db.query("UPDATE posts SET no_of_likes = no_of_likes - 1 WHERE id = $1", [
+		postId,
+	]);
 };

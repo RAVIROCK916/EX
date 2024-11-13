@@ -1,5 +1,11 @@
 import { Request, Response } from "express";
-import { createPostService, getRecentPostsService } from "../services/posts";
+import {
+	createPostService,
+	getPostsService,
+	getRecentPostsService,
+	likePostService,
+	unlikePostService,
+} from "../services/posts";
 
 export const createPostController = async (req: Request, res: Response) => {
 	const { caption, image } = req.body;
@@ -26,5 +32,43 @@ export const getRecentPostsController = async (req: Request, res: Response) => {
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ error: "Failed to fetch recent posts" });
+	}
+};
+
+export const getPostsController = async (req: Request, res: Response) => {
+	const userId = req.user;
+
+	try {
+		const posts = await getPostsService(userId);
+		res.status(200).json(posts);
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ error: "Failed to fetch posts by user" });
+	}
+};
+
+export const likePostController = async (req: Request, res: Response) => {
+	const postId = req.params.id;
+	const userId = req.user;
+
+	try {
+		await likePostService(postId, userId);
+		res.status(200).json({ message: "Post liked successfully" });
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ error: "Failed to like post" });
+	}
+};
+
+export const unlikePostController = async (req: Request, res: Response) => {
+	const postId = req.params.id;
+	const userId = req.user;
+
+	try {
+		await unlikePostService(postId, userId);
+		res.status(200).json({ message: "Post unliked successfully" });
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ error: "Failed to unlike post" });
 	}
 };

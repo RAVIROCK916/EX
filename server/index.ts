@@ -6,6 +6,7 @@ import * as path from "path";
 
 import { authRouter, usersRouter, postsRouter, imagesRouter } from "./routes";
 
+import isAuthenticated from "./middleware/authentication";
 import { logger } from "./middleware/logger";
 
 import { CLIENT_URL } from "./constants";
@@ -33,7 +34,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
-app.use("/posts", postsRouter);
+app.use("/posts", isAuthenticated, postsRouter);
 app.use("/images", imagesRouter);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
