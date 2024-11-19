@@ -127,9 +127,11 @@ const LoginForm = () => {
           <Button
             type="submit"
             // disabled={!isLoaded || isLoading}
-            className="w-full"
+            disabled={isLoading}
+            className="flex w-full items-center gap-1"
           >
-            {isLoading ? <Loader /> : "Login"}
+            <span>Login </span>
+            {isLoading && <Loader />}
           </Button>
         </div>
       </form>

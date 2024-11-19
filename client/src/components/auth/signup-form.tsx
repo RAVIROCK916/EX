@@ -275,9 +275,11 @@ const SignUpForm = () => {
           <Button
             type="submit"
             // disabled={!isLoaded || isUpdating}
-            className="w-full"
+            disabled={isUpdating}
+            className="flex w-full items-center gap-1"
           >
-            {isUpdating ? <Loader /> : "Sign up"}
+            <span>Signup </span>
+            {isUpdating && <Loader />}
           </Button>
         </div>
       </form>
