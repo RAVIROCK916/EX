@@ -2,7 +2,7 @@ import User from "@/types/user";
 
 import { Loader } from "@/components";
 
-import { ArrowUpLeft } from "phosphor-react";
+import { ArrowUpLeft } from "@phosphor-icons/react";
 import { router } from "@/App";
 
 type Props = {

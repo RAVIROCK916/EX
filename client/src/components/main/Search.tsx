@@ -8,7 +8,7 @@ import { SERVER_URL } from "@/constants";
 import useDebounce from "@/hooks/useDebounce";
 import User from "@/types/user";
 import SearchResults from "./SearchResults";
-import { MagnifyingGlass } from "phosphor-react";
+import { MagnifyingGlass } from "@phosphor-icons/react";
 
 const Search = () => {
   const [search, setSearch] = useState("");
