@@ -3,7 +3,7 @@
 import { Button, Input, Label, Loader } from "@/components";
 import { Link } from "@tanstack/react-router";
 
-import { Eye, EyeSlash } from "phosphor-react";
+import { Eye, EyeSlash } from "@phosphor-icons/react";
 
 import axios from "axios";
 

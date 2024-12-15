@@ -1,5 +1,5 @@
 import { cn } from "@/utils/cn";
-import { CircleNotch } from "phosphor-react";
+import { CircleNotch } from "@phosphor-icons/react";
 
 type LoaderProps = {
   className?: string;

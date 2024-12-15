@@ -4,13 +4,16 @@ import Loader from "./global/Loader";
 import FileUploader from "./global/FileUploader";
 import ImageUploader from "./global/ImageUploader";
 import DatePicker from "./global/DatePicker";
+import Headline from "./global/Headline";
 
 // main
 import Main from "./main/Main";
 import Sidebar from "./main/Sidebar";
+import LeftSidebar from "./main/LeftSidebar";
 import RightSidebar from "./main/RightSidebar";
 import Feed from "./main/Feed";
 import PostCard from "./main/PostCard";
+import Comments from "./main/Comments";
 
 // ui
 import { Button } from "./ui/button";
@@ -26,11 +29,14 @@ export {
   FileUploader,
   ImageUploader,
   DatePicker,
+  Headline,
   Main,
   Sidebar,
+  LeftSidebar,
   RightSidebar,
   Feed,
   PostCard,
+  Comments,
   Button,
   Input,
   Label,

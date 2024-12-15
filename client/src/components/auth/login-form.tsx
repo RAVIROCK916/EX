@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Button, Input, Label, Loader } from "@/components";
 
-import { Eye, EyeSlash } from "phosphor-react";
+import { Eye, EyeSlash } from "@phosphor-icons/react";
 import { toast } from "sonner";
 import axios from "axios";
 import { SERVER_URL } from "@/constants";
