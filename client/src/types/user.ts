@@ -13,6 +13,7 @@ type User = {
   profile_picture_url: string;
   cover_picture_url: string;
   created_at: string;
+  is_following?: boolean;
 };
 
 export default User;
