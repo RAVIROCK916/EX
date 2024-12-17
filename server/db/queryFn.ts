@@ -33,9 +33,9 @@ export const getUserById = (id: string) => {
 	return user;
 };
 
-export const getUsersByUsername = (username: string) => {
-	const users = db.query("SELECT * FROM users WHERE username = $1", [username]);
-	return users;
+export const getUserByUsername = (username: string) => {
+	const user = db.query("SELECT * FROM users WHERE username = $1", [username]);
+	return user;
 };
 
 export const searchUsers = (search: string) => {
@@ -45,36 +45,51 @@ export const searchUsers = (search: string) => {
 	return users;
 };
 
-export const followUser = (userId: string, followerId: string) => {
-	const user = db.query(
+export const getFollowers = (userId: string) => {
+	const followers = db.query("SELECT * FROM followers WHERE user_id = $1", [
+		userId,
+	]);
+	return followers;
+};
+
+export const followUser = async (userId: string, followerId: string) => {
+	const user = await db.query(
 		"INSERT INTO followers (user_id, follower_id) VALUES ($1, $2)",
 		[userId, followerId]
 	);
-	db.query(
+	await db.query(
 		"UPDATE users SET followers_count = followers_count + 1 WHERE id = $1",
 		[userId]
 	);
-	db.query(
+	await db.query(
 		"UPDATE users SET following_count = following_count + 1 WHERE id = $1",
 		[followerId]
 	);
 	return user;
 };
 
-export const unfollowUser = (userId: string, followerId: string) => {
-	const user = db.query(
+export const unfollowUser = async (userId: string, followerId: string) => {
+	const user = await db.query(
 		"DELETE FROM followers WHERE user_id = $1 AND follower_id = $2",
 		[userId, followerId]
 	);
-	db.query(
+	await db.query(
 		"UPDATE users SET followers_count = followers_count - 1 WHERE id = $1",
 		[userId]
 	);
-	db.query(
+	await db.query(
 		"UPDATE users SET following_count = following_count - 1 WHERE id = $1",
 		[followerId]
 	);
 	return user;
+};
+
+export const isFollowing = (userId: string, followerId: string) => {
+	const result = db.query(
+		"SELECT * FROM followers WHERE user_id = $1 AND follower_id = $2",
+		[userId, followerId]
+	);
+	return result;
 };
 
 // Post queries
@@ -103,6 +118,11 @@ export const getPostsByUser = (id: string) => {
 	return posts;
 };
 
+export const getLikesOfUser = (userId: string) => {
+	const likes = db.query("SELECT * FROM likes WHERE user_id = $1", [userId]);
+	return likes;
+};
+
 // Likes queries
 
 export const insertIntoLikes = (postId: string, userId: string) => {
@@ -123,4 +143,15 @@ export const deleteFromLikes = (postId: string, userId: string) => {
 	db.query("UPDATE posts SET no_of_likes = no_of_likes - 1 WHERE id = $1", [
 		postId,
 	]);
+};
+
+export const insertIntoComments = (
+	postId: string,
+	userId: string,
+	body: string
+) => {
+	db.query(
+		"INSERT INTO comments (post_id, user_id, body) VALUES ($1, $2, $3)",
+		[postId, userId, body]
+	);
 };

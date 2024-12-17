@@ -6,15 +6,17 @@ import {
 	getRecentPostsController,
 	likePostController,
 	unlikePostController,
+	commentPostController,
 } from "../controllers/posts";
 import isAuthenticated from "../middleware/authentication";
 
 const router = Router();
 
-router.post("/", createPostController);
 router.get("/", getPostsController);
+router.post("/", createPostController);
 router.get("/latest", getRecentPostsController);
-router.post("/like/:id", likePostController);
-router.post("/unlike/:id", unlikePostController);
+router.post("/:id/like", likePostController);
+router.post("/:id/unlike", unlikePostController);
+router.post("/:id/comment", commentPostController);
 
 export default router;

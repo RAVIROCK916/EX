@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import {
 	createPostService,
+	getLikesService,
 	getPostsService,
 	getRecentPostsService,
 	likePostService,
 	unlikePostService,
+	commentPostService,
 } from "../services/posts";
 
 export const createPostController = async (req: Request, res: Response) => {
@@ -27,7 +29,18 @@ export const createPostController = async (req: Request, res: Response) => {
 
 export const getRecentPostsController = async (req: Request, res: Response) => {
 	try {
-		const posts = await getRecentPostsService();
+		let posts = await getRecentPostsService();
+		if (req.user) {
+			const likes = await getLikesService(req.user);
+			console.log(likes);
+			posts = posts.map((post) => {
+				post.liked_by_user = likes.some((like) => {
+					console.log(like.post_id, post.id, like.user_id, req.user);
+					return like.post_id === post.id && like.user_id === req.user;
+				});
+				return post;
+			});
+		}
 		res.status(200).json(posts);
 	} catch (err) {
 		console.log(err);
@@ -71,4 +84,23 @@ export const unlikePostController = async (req: Request, res: Response) => {
 		console.log(err);
 		res.status(500).json({ error: "Failed to unlike post" });
 	}
+};
+
+export const commentPostController = async (req: Request, res: Response) => {
+	const postId = req.params.id;
+	const userId = req.user;
+	const { body } = req;
+
+	if (Object.keys(body).length === 0) {
+		return res.status(400).json({ error: "Body is required" });
+	}
+
+	try {
+		await commentPostService(postId, userId, body);
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ error: "Failed to comment post" });
+	}
+
+	res.status(200).json({ message: "Comment posted successfully" });
 };

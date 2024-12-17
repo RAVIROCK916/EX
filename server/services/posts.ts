@@ -4,6 +4,8 @@ import {
 	getPostsByUser,
 	insertIntoLikes,
 	deleteFromLikes,
+	getLikesOfUser,
+	insertIntoComments,
 } from "../db/queryFn";
 
 export const createPostService = async (
@@ -26,9 +28,22 @@ export const getPostsService = async (userId: string) => {
 };
 
 export const likePostService = async (postId: string, userId: string) => {
-	await insertIntoLikes(postId, userId);
+	insertIntoLikes(postId, userId);
 };
 
 export const unlikePostService = async (postId: string, userId: string) => {
-	await deleteFromLikes(postId, userId);
+	deleteFromLikes(postId, userId);
+};
+
+export const getLikesService = async (userId: string) => {
+	const likes = await getLikesOfUser(userId);
+	return likes.rows;
+};
+
+export const commentPostService = async (
+	postId: string,
+	userId: string,
+	body: string
+) => {
+	insertIntoComments(postId, userId, body);
 };
