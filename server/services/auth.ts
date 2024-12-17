@@ -1,9 +1,5 @@
 import bcrypt from "bcrypt";
-import {
-	getUserById,
-	getUsersByUsername,
-	insertIntoUsers,
-} from "../db/queryFn";
+import { getUserById, getUserByUsername, insertIntoUsers } from "../db/queryFn";
 
 export const createNewUser = async (
 	username: string,
@@ -14,8 +10,8 @@ export const createNewUser = async (
 	await insertIntoUsers(username, email, hashPassword);
 };
 
-export const getUserByUsername = async (username: string) => {
-	const users = await getUsersByUsername(username);
+export const getUserByUsernameService = async (username: string) => {
+	const users = await getUserByUsername(username);
 	const user = users.rows[0];
 
 	if (!user) {

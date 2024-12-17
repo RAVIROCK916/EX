@@ -1,11 +1,11 @@
-import jwt, { VerifyOptions } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import type { Request, Response } from "express";
 
-import { getUsersByUsername } from "../db/queryFn";
+import { getUserByUsername } from "../db/queryFn";
 import {
 	authService,
 	createNewUser,
-	getUserByUsername,
+	getUserByUsernameService,
 } from "../services/auth";
 
 import bcrypt from "bcrypt";
@@ -24,7 +24,7 @@ export const login = async (req: Request, res: Response) => {
 	}
 
 	// check if user exists
-	const user = await getUserByUsername(username);
+	const user = await getUserByUsernameService(username);
 
 	if (!user) {
 		res.status(400).send({
@@ -85,7 +85,7 @@ export const signup = async (req: Request, res: Response) => {
 		return;
 	}
 
-	const users = await getUsersByUsername(username);
+	const users = await getUserByUsername(username);
 
 	if (users.rows.length > 0) {
 		res.status(400).send({ message: "User already exists" });
@@ -95,7 +95,7 @@ export const signup = async (req: Request, res: Response) => {
 	try {
 		await createNewUser(username, email, password);
 
-		const user = await getUserByUsername(username);
+		const user = await getUserByUsernameService(username);
 
 		// generate tokens
 		const { accessToken, refreshToken } = generateTokens(user);
