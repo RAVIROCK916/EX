@@ -59,8 +59,7 @@ function EditProfilePage() {
     setImages({ ...images, coverImage: image });
   };
 
-  const state = useRouterState({ select: (s) => s.location.state });
-  const { profile } = state;
+  const profile = useRouterState({ select: (s) => s.location.state.profile });
 
   const [form, setForm] = useState<FormData>({
     name: profile?.name || undefined,

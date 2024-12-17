@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { Main, Sidebar, RightSidebar, Toaster } from "@/components";
+import { Main, LeftSidebar, RightSidebar, Toaster } from "@/components";
 import protectedAPI from "@/lib/axios/auth";
 
 import store from "@/state/store";
@@ -27,7 +27,7 @@ function RootLayout() {
     <>
       <Toaster richColors theme="dark" position="top-right" />
       <div className="sm:grid sm:grid-cols-[1fr_2fr] lg:grid-cols-[1fr_2fr_1fr]">
-        <Sidebar />
+        <LeftSidebar />
         <Main />
         <RightSidebar />
       </div>
