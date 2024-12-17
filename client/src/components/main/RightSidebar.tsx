@@ -1,8 +1,6 @@
+import Sidebar from "./Sidebar";
+
 const RightSidebar = () => {
-  return (
-    <div className="sticky top-0 hidden h-screen p-6 lg:block">
-      RightSidebar
-    </div>
-  );
+  return <Sidebar className="sm:hidden">RightSidebar</Sidebar>;
 };
 export default RightSidebar;
