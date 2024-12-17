@@ -21,6 +21,7 @@ import { Route as RootLayoutProfileIndexImport } from './routes/_root/_layout/pr
 import { Route as RootLayoutUserUsernameImport } from './routes/_root/_layout/user/$username'
 import { Route as RootLayoutProfileEditImport } from './routes/_root/_layout/profile/edit'
 import { Route as RootLayoutPostCreateImport } from './routes/_root/_layout/post/create'
+import { Route as RootLayoutPostPostIdImport } from './routes/_root/_layout/post/$postId'
 
 // Create/Update Routes
 
@@ -74,6 +75,11 @@ const RootLayoutPostCreateRoute = RootLayoutPostCreateImport.update({
   getParentRoute: () => RootLayoutRoute,
 } as any)
 
+const RootLayoutPostPostIdRoute = RootLayoutPostPostIdImport.update({
+  path: '/post/$postId',
+  getParentRoute: () => RootLayoutRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -111,6 +117,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof RootLayoutIndexImport
+      parentRoute: typeof RootLayoutImport
+    }
+    '/_root/_layout/post/$postId': {
+      id: '/_root/_layout/post/$postId'
+      path: '/post/$postId'
+      fullPath: '/post/$postId'
+      preLoaderRoute: typeof RootLayoutPostPostIdImport
       parentRoute: typeof RootLayoutImport
     }
     '/_root/_layout/post/create': {
@@ -169,6 +182,7 @@ const AuthLayoutRouteWithChildren = AuthLayoutRoute._addFileChildren(
 
 interface RootLayoutRouteChildren {
   RootLayoutIndexRoute: typeof RootLayoutIndexRoute
+  RootLayoutPostPostIdRoute: typeof RootLayoutPostPostIdRoute
   RootLayoutPostCreateRoute: typeof RootLayoutPostCreateRoute
   RootLayoutProfileEditRoute: typeof RootLayoutProfileEditRoute
   RootLayoutUserUsernameRoute: typeof RootLayoutUserUsernameRoute
@@ -178,6 +192,7 @@ interface RootLayoutRouteChildren {
 
 const RootLayoutRouteChildren: RootLayoutRouteChildren = {
   RootLayoutIndexRoute: RootLayoutIndexRoute,
+  RootLayoutPostPostIdRoute: RootLayoutPostPostIdRoute,
   RootLayoutPostCreateRoute: RootLayoutPostCreateRoute,
   RootLayoutProfileEditRoute: RootLayoutProfileEditRoute,
   RootLayoutUserUsernameRoute: RootLayoutUserUsernameRoute,
@@ -194,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLayoutLoginRoute
   '/signup': typeof AuthLayoutSignupRoute
   '/': typeof RootLayoutIndexRoute
+  '/post/$postId': typeof RootLayoutPostPostIdRoute
   '/post/create': typeof RootLayoutPostCreateRoute
   '/profile/edit': typeof RootLayoutProfileEditRoute
   '/user/$username': typeof RootLayoutUserUsernameRoute
@@ -206,6 +222,7 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLayoutLoginRoute
   '/signup': typeof AuthLayoutSignupRoute
   '/': typeof RootLayoutIndexRoute
+  '/post/$postId': typeof RootLayoutPostPostIdRoute
   '/post/create': typeof RootLayoutPostCreateRoute
   '/profile/edit': typeof RootLayoutProfileEditRoute
   '/user/$username': typeof RootLayoutUserUsernameRoute
@@ -220,6 +237,7 @@ export interface FileRoutesById {
   '/_auth/_layout/login': typeof AuthLayoutLoginRoute
   '/_auth/_layout/signup': typeof AuthLayoutSignupRoute
   '/_root/_layout/': typeof RootLayoutIndexRoute
+  '/_root/_layout/post/$postId': typeof RootLayoutPostPostIdRoute
   '/_root/_layout/post/create': typeof RootLayoutPostCreateRoute
   '/_root/_layout/profile/edit': typeof RootLayoutProfileEditRoute
   '/_root/_layout/user/$username': typeof RootLayoutUserUsernameRoute
@@ -234,6 +252,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/'
+    | '/post/$postId'
     | '/post/create'
     | '/profile/edit'
     | '/user/$username'
@@ -245,6 +264,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/'
+    | '/post/$postId'
     | '/post/create'
     | '/profile/edit'
     | '/user/$username'
@@ -257,6 +277,7 @@ export interface FileRouteTypes {
     | '/_auth/_layout/login'
     | '/_auth/_layout/signup'
     | '/_root/_layout/'
+    | '/_root/_layout/post/$postId'
     | '/_root/_layout/post/create'
     | '/_root/_layout/profile/edit'
     | '/_root/_layout/user/$username'
@@ -302,6 +323,7 @@ export const routeTree = rootRoute
       "filePath": "_root/_layout.tsx",
       "children": [
         "/_root/_layout/",
+        "/_root/_layout/post/$postId",
         "/_root/_layout/post/create",
         "/_root/_layout/profile/edit",
         "/_root/_layout/user/$username",
@@ -319,6 +341,10 @@ export const routeTree = rootRoute
     },
     "/_root/_layout/": {
       "filePath": "_root/_layout/index.tsx",
+      "parent": "/_root/_layout"
+    },
+    "/_root/_layout/post/$postId": {
+      "filePath": "_root/_layout/post/$postId.tsx",
       "parent": "/_root/_layout"
     },
     "/_root/_layout/post/create": {
