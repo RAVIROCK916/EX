@@ -7,7 +7,6 @@ import ImageUploader from "../global/ImageUploader";
 import { Button, Input, Label, Textarea } from "@/components";
 import { toast } from "sonner";
 
-import { SERVER_URL } from "@/constants";
 import protectedAPI from "@/lib/axios/auth";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -82,15 +81,11 @@ const PostForm = () => {
     fileData.append("image", file as File);
 
     try {
-      const res = await protectedAPI.post(
-        `${SERVER_URL}/images/upload`,
-        fileData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+      const res = await protectedAPI.post(`/images/upload`, fileData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-      );
+      });
 
       formData.image = res.data.imageUrl;
     } catch (error) {
@@ -100,7 +95,7 @@ const PostForm = () => {
     // submit post to server
 
     try {
-      await protectedAPI.post(`${SERVER_URL}/posts`, formData);
+      await protectedAPI.post(`/posts`, formData);
     } catch (err) {
       console.log(err);
       return;

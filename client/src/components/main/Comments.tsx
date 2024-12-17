@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 import { ProfilePicture } from "../global/ProfilePicture";
 import { Input, Button } from "../";
 import { RootState } from "@/state/store";
-import { SERVER_URL } from "@/constants";
 import protectedAPI from "@/lib/axios/auth";
 
 type Props = {
@@ -17,7 +16,7 @@ const Comments = ({ postId }: Props) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("submitted");
-    await protectedAPI.post(`${SERVER_URL}/posts/${postId}/comment`);
+    await protectedAPI.post(`/posts/${postId}/comment`);
   };
 
   return (

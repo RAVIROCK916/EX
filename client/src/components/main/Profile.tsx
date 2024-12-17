@@ -20,14 +20,12 @@ import { Link } from "@tanstack/react-router";
 
 import { Cake, Link2, MapPin, Calendar } from "lucide-react";
 
-import { SERVER_URL } from "@/constants";
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "../ui/dialog";
 
@@ -55,8 +53,8 @@ const Profile = ({ profile }: ProfileProps) => {
       return;
     }
     debouncedFollow
-      ? protectedAPI.post(`${SERVER_URL}/users/follow/${profile.id}`)
-      : protectedAPI.post(`${SERVER_URL}/users/unfollow/${profile.id}`);
+      ? protectedAPI.post(`/users/follow/${profile.id}`)
+      : protectedAPI.post(`/users/unfollow/${profile.id}`);
   }, [debouncedFollow]);
 
   return profile ? (

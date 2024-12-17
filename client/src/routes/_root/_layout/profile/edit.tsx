@@ -24,7 +24,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import protectedAPI from "@/lib/axios/auth";
-import { SERVER_URL } from "@/constants";
 import { toast } from "sonner";
 import uploadFile from "@/utils/uploadFile";
 
@@ -132,7 +131,7 @@ function EditProfilePage() {
     // submit form
 
     try {
-      await protectedAPI.post(`${SERVER_URL}/users/profile/save`, form);
+      await protectedAPI.post(`/users/profile/save`, form);
       navigate({ to: "/profile" });
       toast.success("Profile updated successfully");
     } catch (error) {

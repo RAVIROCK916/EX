@@ -1,5 +1,4 @@
 import User from "@/types/user";
-import { SERVER_URL } from "@/constants";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import Profile from "@/components/main/Profile";
@@ -15,7 +14,7 @@ function Username() {
   const { username } = Route.useParams();
 
   useEffect(() => {
-    protectedAPI.get(`${SERVER_URL}/users/${username}/profile`).then((res) => {
+    protectedAPI.get(`/users/${username}/profile`).then((res) => {
       setProfile(res.data);
     });
   }, []);

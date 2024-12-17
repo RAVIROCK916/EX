@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Post from "@/types/post";
 
 import Loader from "../global/Loader";
-import { SERVER_URL } from "@/constants";
 import protectedAPI from "@/lib/axios/auth";
 import PostCard from "./PostCard";
 
@@ -13,7 +12,7 @@ const Feed = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await protectedAPI.get(`${SERVER_URL}/posts/latest`);
+      const response = await protectedAPI.get(`/posts/latest`);
       const data = await response.data;
 
       setPosts(data);

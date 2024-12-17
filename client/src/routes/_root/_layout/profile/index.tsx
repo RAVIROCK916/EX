@@ -1,4 +1,3 @@
-import { SERVER_URL } from "@/constants";
 import protectedAPI from "@/lib/axios/auth";
 import User from "@/types/user";
 
@@ -17,7 +16,7 @@ function ProfilePage() {
   const [profile, setProfile] = useState<ProfileType>();
 
   useEffect(() => {
-    protectedAPI.get(`${SERVER_URL}/users/profile`).then((res) => {
+    protectedAPI.get(`/users/profile`).then((res) => {
       setProfile(res.data);
     });
   }, []);

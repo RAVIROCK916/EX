@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Post from "@/types/post";
 import protectedAPI from "@/lib/axios/auth";
-import { SERVER_URL } from "@/constants";
 import { PostCard, Loader } from "@/components";
 
 type Post_Type = Post & { liked_by_user: boolean };
@@ -13,7 +12,7 @@ const Posts = () => {
   useEffect(() => {
     setLoading(true);
     try {
-      protectedAPI.get(`${SERVER_URL}/posts`).then((res) => {
+      protectedAPI.get(`/posts`).then((res) => {
         setPosts(res.data);
       });
     } catch (error) {

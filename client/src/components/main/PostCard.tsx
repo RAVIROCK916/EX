@@ -10,7 +10,6 @@ import {
 } from "@phosphor-icons/react";
 import useDebounce from "@/hooks/useDebounce";
 import protectedAPI from "@/lib/axios/auth";
-import { SERVER_URL } from "@/constants";
 import { Link, useLocation } from "@tanstack/react-router";
 
 import Loader from "../global/Loader";
@@ -68,7 +67,7 @@ const PostCard = ({ post }: Props) => {
       setIsFirstRender(false);
       return;
     }
-    protectedAPI.post(`${SERVER_URL}/posts/${post.id}/like`);
+    protectedAPI.post(`/posts/${post.id}/like`);
   }, [debouncedLiked]);
 
   useEffect(() => {
@@ -77,8 +76,8 @@ const PostCard = ({ post }: Props) => {
       return;
     }
     debouncedFollow
-      ? protectedAPI.post(`${SERVER_URL}/users/follow/${user?.id}`)
-      : protectedAPI.post(`${SERVER_URL}/users/unfollow/${user?.id}`);
+      ? protectedAPI.post(`/users/follow/${user?.id}`)
+      : protectedAPI.post(`/users/unfollow/${user?.id}`);
   }, [debouncedFollow]);
 
   const handleFetchProfile = async () => {
@@ -186,10 +185,10 @@ const PostCard = ({ post }: Props) => {
         <div className={cn(!isPostPage && "cursor-pointer", "space-y-3")}>
           <p
             className="text-lg"
-            disabled={isPostPage}
-            onClick={() =>
-              navigate({ to: `/post/${post.id}`, state: { post } })
-            }
+            onClick={() => {
+              if (isPostPage) return;
+              navigate({ to: `/post/${post.id}`, state: { post } });
+            }}
           >
             {caption}
           </p>
