@@ -7,6 +7,7 @@ import {
 	likePostService,
 	unlikePostService,
 	commentPostService,
+	getPostCommentsService,
 } from "../services/posts";
 
 export const createPostController = async (req: Request, res: Response) => {
@@ -89,18 +90,33 @@ export const unlikePostController = async (req: Request, res: Response) => {
 export const commentPostController = async (req: Request, res: Response) => {
 	const postId = req.params.id;
 	const userId = req.user;
-	const { body } = req;
 
-	if (Object.keys(body).length === 0) {
+	if (Object.keys(req.body).length === 0) {
 		return res.status(400).json({ error: "Body is required" });
 	}
 
+	const { comment } = req.body;
+
 	try {
-		await commentPostService(postId, userId, body);
+		await commentPostService(postId, userId, comment);
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({ error: "Failed to comment post" });
 	}
 
 	res.status(200).json({ message: "Comment posted successfully" });
+};
+
+export const getPostCommentsController = async (
+	req: Request,
+	res: Response
+) => {
+	const { id } = req.params;
+	try {
+		const comments = await getPostCommentsService(id);
+		res.status(200).json(comments);
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ error: "Failed to fetch comments" });
+	}
 };

@@ -6,6 +6,7 @@ import {
 	deleteFromLikes,
 	getLikesOfUser,
 	insertIntoComments,
+	getCommentsOfPost,
 } from "../db/queryFn";
 
 export const createPostService = async (
@@ -46,4 +47,9 @@ export const commentPostService = async (
 	body: string
 ) => {
 	insertIntoComments(postId, userId, body);
+};
+
+export const getPostCommentsService = async (postId: string) => {
+	const comments = await getCommentsOfPost(postId);
+	return comments.rows;
 };
