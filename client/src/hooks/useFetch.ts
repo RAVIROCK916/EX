@@ -1,4 +1,4 @@
-import axios from "axios";
+import protectedAPI from "@/lib/axios/auth";
 import { useState, useEffect } from "react";
 
 export default function useFetch<T>(url: string) {
@@ -9,7 +9,7 @@ export default function useFetch<T>(url: string) {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(url);
+      const response = await protectedAPI.get(url);
       const data = await response.data;
       setData(data);
       setError("");
@@ -22,7 +22,7 @@ export default function useFetch<T>(url: string) {
 
   useEffect(() => {
     fetchData();
-  });
+  }, []);
 
   return { data, loading, error };
 }
