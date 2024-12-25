@@ -1,8 +1,8 @@
 import protectedAPI from "@/lib/axios/auth";
 import { useState, useEffect } from "react";
 
-export default function useFetch<T>(url: string) {
-  const [data, setData] = useState<T>();
+export default function useFetch(url: string, deps: any[] = []) {
+  const [data, setData] = useState<any>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -22,7 +22,7 @@ export default function useFetch<T>(url: string) {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, deps);
 
   return { data, loading, error };
 }

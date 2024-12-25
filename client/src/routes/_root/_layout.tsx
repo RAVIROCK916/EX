@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_root/_layout")({
       const { id, username, profile_picture_url } = res.data;
       store.dispatch(setProfile({ id, username, profile_picture_url }));
     } catch (error) {
-      toast.error("Not logged in");
+      // toast.error("Not logged in");
       // window.location.href = "/login";
     }
   },
