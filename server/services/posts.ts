@@ -44,9 +44,10 @@ export const getLikesService = async (userId: string) => {
 export const commentPostService = async (
 	postId: string,
 	userId: string,
-	body: string
+	body: string,
+	reply_to: string
 ) => {
-	insertIntoComments(postId, userId, body);
+	insertIntoComments(postId, userId, body, reply_to);
 };
 
 export const getPostCommentsService = async (postId: string) => {

@@ -95,10 +95,10 @@ export const commentPostController = async (req: Request, res: Response) => {
 		return res.status(400).json({ error: "Body is required" });
 	}
 
-	const { comment } = req.body;
+	const { comment, reply_to } = req.body;
 
 	try {
-		await commentPostService(postId, userId, comment);
+		await commentPostService(postId, userId, comment, reply_to);
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({ error: "Failed to comment post" });

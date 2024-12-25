@@ -148,10 +148,18 @@ export const deleteFromLikes = (postId: string, userId: string) => {
 export const insertIntoComments = (
 	postId: string,
 	userId: string,
-	body: string
+	body: string,
+	reply_to: string
 ) => {
 	db.query(
-		"INSERT INTO comments (post_id, user_id, body) VALUES ($1, $2, $3)",
-		[postId, userId, body]
+		"INSERT INTO comments (post_id, user_id, body, reply_to) VALUES ($1, $2, $3, $4)",
+		[postId, userId, body, reply_to]
+	);
+};
+
+export const getCommentsOfPost = (postId: string) => {
+	return db.query(
+		"SELECT comments.*, users.username, users.profile_picture_url FROM comments INNER JOIN users ON comments.user_id = users.id WHERE comments.post_id = $1",
+		[postId]
 	);
 };
