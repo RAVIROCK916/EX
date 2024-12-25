@@ -209,7 +209,12 @@ const PostCard = ({ post }: Props) => {
           <p className="select-none">{likes_count}</p>
         </span>
         <span>
-          <ChatCircle className="size-6 cursor-pointer" />
+          <ChatCircle
+            className="size-6 cursor-pointer"
+            onClick={() =>
+              navigate({ to: `/post/${post.id}`, state: { post } })
+            }
+          />
           <p className="select-none">{no_of_comments}</p>
         </span>
         <span>

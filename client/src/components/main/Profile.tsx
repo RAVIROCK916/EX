@@ -173,25 +173,25 @@ const Profile = ({ profile }: ProfileProps) => {
           <TabsList className="w-full rounded-none bg-transparent *:w-full">
             <TabsTrigger
               value="posts"
-              className="rounded-none data-[state=active]:border-b-2 data-[state=active]:border-white"
+              className="rounded-none border-b border-neutral-800 data-[state=active]:border-b-2 data-[state=active]:border-white"
             >
               Posts
             </TabsTrigger>
             <TabsTrigger
               value="replies"
-              className="rounded-none data-[state=active]:border-b-2 data-[state=active]:border-white"
+              className="rounded-none border-b border-neutral-800 data-[state=active]:border-b-2 data-[state=active]:border-white"
             >
               Replies
             </TabsTrigger>
             <TabsTrigger
               value="likes"
-              className="rounded-none data-[state=active]:border-b-2 data-[state=active]:border-white"
+              className="rounded-none border-b border-neutral-800 data-[state=active]:border-b-2 data-[state=active]:border-white"
             >
               Likes
             </TabsTrigger>
             <TabsTrigger
               value="media"
-              className="rounded-none data-[state=active]:border-b-2 data-[state=active]:border-white"
+              className="rounded-none border-b border-neutral-800 data-[state=active]:border-b-2 data-[state=active]:border-white"
             >
               Media
             </TabsTrigger>

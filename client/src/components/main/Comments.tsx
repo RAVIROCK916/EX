@@ -1,36 +1,43 @@
 import { useSelector } from "react-redux";
-import { ProfilePicture } from "../global/ProfilePicture";
-import { Input, Button } from "../";
 import { RootState } from "@/state/store";
 import protectedAPI from "@/lib/axios/auth";
+import { useContext, useEffect, useRef, useState } from "react";
+import type Comment from "@/types/comment";
+import { formatComments } from "@/utils";
+import UserComment from "./UserComment";
+import InputCommentBox from "./InputCommentBox";
+import { PostContext } from "@/routes/_root/_layout/post/$postId";
 
-type Props = {
-  postId: string;
-};
+const Comments = () => {
+  const [postComments, setPostComments] = useState<Comment[]>([]);
+  let comments = useRef<Comment[]>([]);
 
-const Comments = ({ postId }: Props) => {
-  const { profile_picture_url } = useSelector(
-    (state: RootState) => state.profile,
-  );
+  const post = useContext(PostContext);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("submitted");
-    await protectedAPI.post(`/posts/${postId}/comment`);
+  useEffect(() => {
+    protectedAPI.get(`/posts/${post.id}/comments`).then((res) => {
+      setPostComments(formatComments(res.data));
+      comments.current = res.data;
+    });
+  }, []);
+
+  const addComment = (comment: Comment) => {
+    comments.current.push(comment);
+    setPostComments(postComments.concat(comment));
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-4">
-        <ProfilePicture img_url={profile_picture_url} />
-        <form className="w-full" onSubmit={handleSubmit}>
-          <Input placeholder="Add a comment" />
-          <Button variant="outline" type="submit">
-            Post
-          </Button>
-        </form>
+    <div className="space-y-6">
+      <InputCommentBox isReply={false} addReply={addComment} />
+      <div className="space-y-4">
+        <h3 className="mb-2 font-medium">{comments.current.length} Comments</h3>
+        <div className="space-y-4">
+          {postComments.map((comment: Comment) => (
+            <UserComment key={comment.id} comment={comment} />
+          ))}
+        </div>
       </div>
-      <div></div>
+      <div className="min-h-96"></div>
     </div>
   );
 };
