@@ -27,6 +27,7 @@ const UserComment = ({ comment }: Props) => {
   const handleReply = () => {
     console.log("reply");
     setIsReplying(true);
+    setShowReplies(true);
   };
 
   return (
@@ -41,7 +42,7 @@ const UserComment = ({ comment }: Props) => {
         <div className="flex-1 space-y-1">
           <div className="flex items-center gap-2 text-sm text-neutral-500">
             <p className="text-neutral-300">{comment.user.username}</p>
-            <span className="text-textGray text-xs">
+            <span className="text-xs text-textGray">
               {agoTime(comment.created_at)}
             </span>
           </div>
@@ -59,7 +60,7 @@ const UserComment = ({ comment }: Props) => {
           ) : (
             <Button
               variant="ghost"
-              className="text-textGray h-auto p-0 hover:bg-transparent hover:text-neutral-100"
+              className="h-auto p-0 text-textGray hover:bg-transparent hover:text-neutral-100"
               onClick={handleReply}
             >
               Reply
@@ -76,7 +77,7 @@ const UserComment = ({ comment }: Props) => {
               ))}
               <Button
                 variant="ghost"
-                className="text-textGray h-auto p-0 text-xs hover:bg-transparent hover:text-neutral-100"
+                className="h-auto p-0 text-xs text-textGray hover:bg-transparent hover:text-neutral-100"
                 onClick={() => setShowReplies(false)}
               >
                 Hide replies
@@ -85,7 +86,7 @@ const UserComment = ({ comment }: Props) => {
           ) : (
             <Button
               variant="ghost"
-              className="text-textGray h-auto p-0 text-xs hover:bg-transparent hover:text-neutral-100"
+              className="h-auto p-0 text-xs text-textGray hover:bg-transparent hover:text-neutral-100"
               onClick={() => setShowReplies(true)}
             >
               Show {currentComment.replies.length}{" "}

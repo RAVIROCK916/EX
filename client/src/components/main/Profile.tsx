@@ -5,6 +5,7 @@ import useDebounce from "@/hooks/useDebounce";
 import protectedAPI from "@/lib/axios/auth";
 
 import User from "@/types/user";
+import Post from "@/types/post";
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import FullBleed from "@/components/global/FullBleed";
@@ -29,6 +30,8 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 
+import useFetch from "@/hooks/useFetch";
+
 type ProfileProps = {
   profile: User;
 };
@@ -38,12 +41,14 @@ const Profile = ({ profile }: ProfileProps) => {
   const [isFollowing, setIsFollowing] = useState(profile.is_following);
   const [isFirstRender, setIsFirstRender] = useState(true);
 
+  const [likedPosts, setLikedPosts] = useState<Post[]>([]);
+  const [bookmarkedPosts, setBookmarkedPosts] = useState<Post[]>([]);
+
   const debouncedFollow = useDebounce(isFollowing, 1000);
 
   const handleFollow = () => {
     if (!isFollowing) {
       setIsFollowing(!isFollowing);
-    } else {
     }
   };
 
@@ -56,6 +61,16 @@ const Profile = ({ profile }: ProfileProps) => {
       ? protectedAPI.post(`/users/follow/${profile.id}`)
       : protectedAPI.post(`/users/unfollow/${profile.id}`);
   }, [debouncedFollow]);
+
+  const getLikedPosts = () => {
+    const { data } = useFetch(`/posts/user/${profile.id}/liked`);
+    setLikedPosts(data);
+  };
+
+  const getBookmarkedPosts = () => {
+    const { data } = useFetch(`/posts/user/${profile.id}/bookmarked`);
+    setBookmarkedPosts(data);
+  };
 
   return profile ? (
     <div className="space-y-8">
@@ -97,10 +112,7 @@ const Profile = ({ profile }: ProfileProps) => {
           ) : (
             <Dialog>
               <DialogTrigger>
-                <Button
-                  variant={isFollowing ? "outline" : "default"}
-                  onClick={handleFollow}
-                >
+                <Button variant="outline" onClick={handleFollow}>
                   Unfollow
                 </Button>
               </DialogTrigger>
@@ -178,16 +190,18 @@ const Profile = ({ profile }: ProfileProps) => {
               Posts
             </TabsTrigger>
             <TabsTrigger
-              value="replies"
-              className="rounded-none border-b border-neutral-800 data-[state=active]:border-b-2 data-[state=active]:border-white"
-            >
-              Replies
-            </TabsTrigger>
-            <TabsTrigger
               value="likes"
               className="rounded-none border-b border-neutral-800 data-[state=active]:border-b-2 data-[state=active]:border-white"
+              onClick={getLikedPosts}
             >
               Likes
+            </TabsTrigger>
+            <TabsTrigger
+              value="bookmarks"
+              className="rounded-none border-b border-neutral-800 data-[state=active]:border-b-2 data-[state=active]:border-white"
+              onClick={getBookmarkedPosts}
+            >
+              Bookmarks
             </TabsTrigger>
             <TabsTrigger
               value="media"
@@ -198,12 +212,12 @@ const Profile = ({ profile }: ProfileProps) => {
           </TabsList>
         </FullBleed>
         <TabsContent value="posts">
-          <Posts />
-        </TabsContent>
-        <TabsContent value="replies">
-          <div>Replies</div>
+          <Posts userId={profile.id} />
         </TabsContent>
         <TabsContent value="likes">
+          <div>Replies</div>
+        </TabsContent>
+        <TabsContent value="bookmarks">
           <div>Likes</div>
         </TabsContent>
         <TabsContent value="media">

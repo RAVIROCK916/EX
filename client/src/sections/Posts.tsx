@@ -3,16 +3,18 @@ import Post from "@/types/post";
 import protectedAPI from "@/lib/axios/auth";
 import { PostCard, Loader } from "@/components";
 
-type Post_Type = Post & { liked_by_user: boolean };
+type Props = {
+  userId: string;
+};
 
-const Posts = () => {
-  const [posts, setPosts] = useState<Post_Type[]>([]);
+const Posts = ({ userId }: Props) => {
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
     try {
-      protectedAPI.get(`/posts`).then((res) => {
+      protectedAPI.get(`/posts/user/${userId}`).then((res) => {
         setPosts(res.data);
       });
     } catch (error) {
@@ -28,10 +30,12 @@ const Posts = () => {
         <div className="flex items-center justify-center">
           <Loader />
         </div>
-      ) : posts ? (
+      ) : posts.length > 0 ? (
         posts.map((post) => <PostCard key={post.id} post={post} />)
       ) : (
-        <div>No posts created yet</div>
+        <p className="text-center text-sm text-tertiary-foreground">
+          Nothing posted yet
+        </p>
       )}
     </section>
   );

@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux";
-import { RootState } from "@/state/store";
 import protectedAPI from "@/lib/axios/auth";
 import { useContext, useEffect, useRef, useState } from "react";
 import type Comment from "@/types/comment";
@@ -13,6 +11,8 @@ const Comments = () => {
   let comments = useRef<Comment[]>([]);
 
   const post = useContext(PostContext);
+
+  console.log({ comments });
 
   useEffect(() => {
     protectedAPI.get(`/posts/${post.id}/comments`).then((res) => {

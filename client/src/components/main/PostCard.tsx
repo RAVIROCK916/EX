@@ -38,6 +38,9 @@ const PostCard = ({ post }: Props) => {
   const [user, setUser] = useState<User | null>(null);
   const [isFirstRender, setIsFirstRender] = useState(true);
   const [liked, setLiked] = useState<boolean | undefined>(post.liked_by_user);
+  const [bookmarked, setBookmarked] = useState<boolean | undefined>(
+    post.bookmarked_by_user,
+  );
   const [isFollowing, setIsFollowing] = useState<Boolean | null>(null);
 
   const navigate = useNavigate();
@@ -45,6 +48,7 @@ const PostCard = ({ post }: Props) => {
   const currentUser = useSelector((state: RootState) => state.profile);
 
   const debouncedLiked = useDebounce(liked, 1000);
+  const debouncedBookmarked = useDebounce(bookmarked, 1000);
   const debouncedFollow = useDebounce(isFollowing, 1000);
 
   const { pathname } = useLocation();
@@ -67,8 +71,21 @@ const PostCard = ({ post }: Props) => {
       setIsFirstRender(false);
       return;
     }
-    protectedAPI.post(`/posts/${post.id}/like`);
+
+    debouncedLiked
+      ? protectedAPI.post(`/posts/${post.id}/like`)
+      : protectedAPI.post(`/posts/${post.id}/unlike`);
   }, [debouncedLiked]);
+
+  useEffect(() => {
+    if (isFirstRender) {
+      setIsFirstRender(false);
+      return;
+    }
+    debouncedBookmarked
+      ? protectedAPI.post(`/posts/${post.id}/bookmark`)
+      : protectedAPI.post(`/posts/${post.id}/unbookmark`);
+  }, [debouncedBookmarked]);
 
   useEffect(() => {
     if (isFirstRender) {
@@ -85,11 +102,6 @@ const PostCard = ({ post }: Props) => {
     setUser(data);
   };
 
-  const handleLike = () => {
-    setLiked(!liked);
-    setLikesCount(() => (liked ? likes_count - 1 : likes_count + 1));
-  };
-
   const handleFollow = () => {
     if (debouncedFollow === null) {
       setIsFollowing(!user?.is_following);
@@ -98,8 +110,17 @@ const PostCard = ({ post }: Props) => {
     }
   };
 
+  const handleLike = () => {
+    setLiked(!liked);
+    setLikesCount(() => (liked ? likes_count - 1 : likes_count + 1));
+  };
+
+  const handleBookmark = () => {
+    setBookmarked(!bookmarked);
+  };
+
   return (
-    <div className="space-y-5 rounded-md bg-neutral-900 p-6">
+    <div className="space-y-5 rounded-md bg-background p-6">
       <div className="space-y-4">
         <div className="flex items-center gap-4">
           <figure className="size-10 overflow-hidden rounded-full">
@@ -119,7 +140,7 @@ const PostCard = ({ post }: Props) => {
               </HoverCardTrigger>
               <HoverCardContent
                 align="start"
-                className="w-80 border-neutral-600"
+                className="w-80 border-neutral-600 bg-neutral-950"
               >
                 {user ? (
                   <div>
@@ -199,30 +220,52 @@ const PostCard = ({ post }: Props) => {
           )}
         </div>
       </div>
-      <div className="flex items-center justify-between text-sm *:flex *:w-12 *:items-center *:gap-2 *:text-white">
-        <span>
-          <Heart
-            className="size-6 cursor-pointer"
-            weight={liked ? "fill" : undefined}
-            onClick={handleLike}
-          />
-          <p className="select-none">{likes_count}</p>
-        </span>
-        <span>
-          <ChatCircle
-            className="size-6 cursor-pointer"
-            onClick={() =>
-              navigate({ to: `/post/${post.id}`, state: { post } })
-            }
-          />
-          <p className="select-none">{no_of_comments}</p>
-        </span>
-        <span>
-          <BookmarkSimple className="size-6 cursor-pointer" />
-        </span>
-        <span>
-          <PaperPlaneTilt className="size-6 cursor-pointer" />
-        </span>
+      <div className="flex items-center justify-between text-sm *:w-12 *:text-textGray">
+        <div>
+          <div
+            className={cn(
+              "flex w-max items-center gap-2 transition-colors hover:text-white",
+              liked && "text-white",
+            )}
+          >
+            <Heart
+              className="size-6 cursor-pointer"
+              weight={liked ? "fill" : undefined}
+              onClick={handleLike}
+            />
+            <p className="select-none">{likes_count}</p>
+          </div>
+        </div>
+        <div>
+          <div className="flex w-max items-center gap-2 transition-colors hover:text-white">
+            <ChatCircle
+              className="size-6 cursor-pointer"
+              onClick={() =>
+                navigate({ to: `/post/${post.id}`, state: { post } })
+              }
+            />
+            <p className="select-none">{no_of_comments}</p>
+          </div>
+        </div>
+        <div>
+          <div
+            className={cn(
+              "w-max transition-colors hover:text-white",
+              bookmarked && "text-white",
+            )}
+            onClick={handleBookmark}
+          >
+            <BookmarkSimple
+              className="size-6 cursor-pointer"
+              weight={bookmarked ? "fill" : undefined}
+            />
+          </div>
+        </div>
+        <div>
+          <div className="w-max transition-colors hover:text-white">
+            <PaperPlaneTilt className="size-6 cursor-pointer" />
+          </div>
+        </div>
       </div>
     </div>
   );

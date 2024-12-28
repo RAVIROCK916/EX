@@ -10,7 +10,7 @@ export const Route = createFileRoute("/_root/_layout/profile/")({
   component: ProfilePage,
 });
 
-type ProfileType = User & { isFollowing: Boolean };
+type ProfileType = User & { is_following: Boolean };
 
 function ProfilePage() {
   const [profile, setProfile] = useState<ProfileType>();
