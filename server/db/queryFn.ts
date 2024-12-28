@@ -106,6 +106,11 @@ export const insertIntoPosts = (
 	return post;
 };
 
+export const getPosts = (postIds: string[]) => {
+	const posts = db.query("SELECT * FROM posts WHERE id = ANY($1)", [postIds]);
+	return posts;
+};
+
 export const getRecentPosts = () => {
 	const posts = db.query(
 		"SELECT * FROM user_posts ORDER BY created_at DESC LIMIT 10"
@@ -162,4 +167,24 @@ export const getCommentsOfPost = (postId: string) => {
 		"SELECT comments.*, users.username, users.profile_picture_url FROM comments INNER JOIN users ON comments.user_id = users.id WHERE comments.post_id = $1",
 		[postId]
 	);
+};
+
+// Bookmarks queries
+
+export const insertIntoBookmarks = (postId: string, userId: string) => {
+	db.query("INSERT INTO bookmarks (post_id, user_id) VALUES ($1, $2)", [
+		postId,
+		userId,
+	]);
+};
+
+export const deleteFromBookmarks = (postId: string, userId: string) => {
+	db.query("DELETE FROM bookmarks WHERE post_id = $1 AND user_id = $2", [
+		postId,
+		userId,
+	]);
+};
+
+export const getBookmarksOfUser = (userId: string) => {
+	return db.query("SELECT * FROM bookmarks WHERE user_id = $1", [userId]);
 };

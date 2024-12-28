@@ -34,11 +34,8 @@ export const getUserProfileController = async (req: Request, res: Response) => {
 	// Check if the user is following the current user
 	console.log(req.user);
 	if (req.user) {
-		console.log("asdd");
-
 		const isUserFollowing = await isFollowingService(user.rows[0].id, req.user);
-
-		user.rows[0].isFollowing = isUserFollowing?.rows?.length > 0;
+		user.rows[0].is_following = isUserFollowing?.rows?.length > 0;
 	}
 
 	res.json(user.rows[0]);

@@ -1,14 +1,16 @@
 import { Request, Response } from "express";
 import {
 	createPostService,
-	getLikesService,
-	getPostsService,
+	getUserPostsService,
 	getRecentPostsService,
+	getLikedPostsService,
 	likePostService,
 	unlikePostService,
 	commentPostService,
 	getPostCommentsService,
+	bookmarkPostService,
 } from "../services/posts";
+import updatePostInfo from "../utils/updatePostInfo";
 
 export const createPostController = async (req: Request, res: Response) => {
 	const { caption, image } = req.body;
@@ -31,17 +33,8 @@ export const createPostController = async (req: Request, res: Response) => {
 export const getRecentPostsController = async (req: Request, res: Response) => {
 	try {
 		let posts = await getRecentPostsService();
-		if (req.user) {
-			const likes = await getLikesService(req.user);
-			console.log(likes);
-			posts = posts.map((post) => {
-				post.liked_by_user = likes.some((like) => {
-					console.log(like.post_id, post.id, like.user_id, req.user);
-					return like.post_id === post.id && like.user_id === req.user;
-				});
-				return post;
-			});
-		}
+		posts = await updatePostInfo(posts, req.user);
+
 		res.status(200).json(posts);
 	} catch (err) {
 		console.log(err);
@@ -49,15 +42,26 @@ export const getRecentPostsController = async (req: Request, res: Response) => {
 	}
 };
 
-export const getPostsController = async (req: Request, res: Response) => {
-	const userId = req.user;
+export const getUserPostsController = async (req: Request, res: Response) => {
+	const userId = req.params.id;
 
 	try {
-		const posts = await getPostsService(userId);
+		const posts = await getUserPostsService(userId);
 		res.status(200).json(posts);
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ error: "Failed to fetch posts by user" });
+	}
+};
+
+export const getLikedPostsController = async (req: Request, res: Response) => {
+	const userId = req.params.id;
+	try {
+		const posts = await getLikedPostsService(userId);
+		res.status(200).json(posts);
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ error: "Failed to fetch liked posts" });
 	}
 };
 
@@ -119,4 +123,18 @@ export const getPostCommentsController = async (
 		console.log(err);
 		res.status(500).json({ error: "Failed to fetch comments" });
 	}
+};
+
+export const bookmarkPostController = async (req: Request, res: Response) => {
+	const postId = req.params.id;
+	const userId = req.user;
+
+	try {
+		await bookmarkPostService(postId, userId);
+	} catch (err) {
+		console.log(err);
+		return res.status(500).json({ error: "Failed to bookmark post" });
+	}
+
+	res.status(200).json({ message: "Post bookmarked successfully" });
 };

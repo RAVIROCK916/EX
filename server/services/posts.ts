@@ -1,5 +1,6 @@
 import {
 	insertIntoPosts,
+	getPosts,
 	getRecentPosts,
 	getPostsByUser,
 	insertIntoLikes,
@@ -7,6 +8,9 @@ import {
 	getLikesOfUser,
 	insertIntoComments,
 	getCommentsOfPost,
+	insertIntoBookmarks,
+	deleteFromBookmarks,
+	getBookmarksOfUser,
 } from "../db/queryFn";
 
 export const createPostService = async (
@@ -23,8 +27,15 @@ export const getRecentPostsService = async () => {
 	return posts.rows;
 };
 
-export const getPostsService = async (userId: string) => {
+export const getUserPostsService = async (userId: string) => {
 	const posts = await getPostsByUser(userId);
+	return posts.rows;
+};
+
+export const getLikedPostsService = async (userId: string) => {
+	const likes = await getLikesOfUser(userId);
+	const likedPosts = likes.rows.map((like) => like.post_id);
+	const posts = await getPosts(likedPosts);
 	return posts.rows;
 };
 
@@ -53,4 +64,17 @@ export const commentPostService = async (
 export const getPostCommentsService = async (postId: string) => {
 	const comments = await getCommentsOfPost(postId);
 	return comments.rows;
+};
+
+export const bookmarkPostService = async (postId: string, userId: string) => {
+	insertIntoBookmarks(postId, userId);
+};
+
+export const unbookmarkPostService = async (postId: string, userId: string) => {
+	deleteFromBookmarks(postId, userId);
+};
+
+export const getBookmarksService = async (userId: string) => {
+	const bookmarks = await getBookmarksOfUser(userId);
+	return bookmarks.rows;
 };
