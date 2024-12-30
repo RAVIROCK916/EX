@@ -9,6 +9,7 @@ import {
 	commentPostService,
 	getPostCommentsService,
 	bookmarkPostService,
+	getBookmarkedPostsService,
 } from "../services/posts";
 import updatePostInfo from "../utils/updatePostInfo";
 
@@ -62,6 +63,20 @@ export const getLikedPostsController = async (req: Request, res: Response) => {
 	} catch (err) {
 		console.log(err);
 		res.status(500).json({ error: "Failed to fetch liked posts" });
+	}
+};
+
+export const getBookmarkedPostsController = async (
+	req: Request,
+	res: Response
+) => {
+	const userId = req.params.id;
+	try {
+		const posts = await getBookmarkedPostsService(userId);
+		res.status(200).json(posts);
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ error: "Failed to fetch bookmarked posts" });
 	}
 };
 

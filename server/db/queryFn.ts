@@ -107,7 +107,9 @@ export const insertIntoPosts = (
 };
 
 export const getPosts = (postIds: string[]) => {
-	const posts = db.query("SELECT * FROM posts WHERE id = ANY($1)", [postIds]);
+	const posts = db.query("SELECT * FROM user_posts WHERE id = ANY($1)", [
+		postIds,
+	]);
 	return posts;
 };
 
@@ -121,11 +123,6 @@ export const getRecentPosts = () => {
 export const getPostsByUser = (id: string) => {
 	const posts = db.query("SELECT * FROM user_posts WHERE user_id = $1", [id]);
 	return posts;
-};
-
-export const getLikesOfUser = (userId: string) => {
-	const likes = db.query("SELECT * FROM likes WHERE user_id = $1", [userId]);
-	return likes;
 };
 
 // Likes queries
@@ -149,6 +146,13 @@ export const deleteFromLikes = (postId: string, userId: string) => {
 		postId,
 	]);
 };
+
+export const getLikesOfUser = (userId: string) => {
+	const likes = db.query("SELECT * FROM likes WHERE user_id = $1", [userId]);
+	return likes;
+};
+
+// Comments queries
 
 export const insertIntoComments = (
 	postId: string,

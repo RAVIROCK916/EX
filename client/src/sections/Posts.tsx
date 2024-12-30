@@ -1,28 +1,31 @@
 import { useState, useEffect } from "react";
 import Post from "@/types/post";
-import protectedAPI from "@/lib/axios/auth";
 import { PostCard, Loader } from "@/components";
 
 type Props = {
-  userId: string;
+  postsUrl: string;
+  cachedFetch?: any;
 };
 
-const Posts = ({ userId }: Props) => {
+const Posts = ({ postsUrl, cachedFetch }: Props) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    handleFetch(postsUrl);
+  }, []);
+
+  async function handleFetch(url: string) {
     setLoading(true);
     try {
-      protectedAPI.get(`/posts/user/${userId}`).then((res) => {
-        setPosts(res.data);
-      });
+      const fetchedPosts = await cachedFetch(url);
+      setPosts(fetchedPosts);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }
 
   return (
     <section className="space-y-6">

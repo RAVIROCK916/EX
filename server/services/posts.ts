@@ -39,6 +39,13 @@ export const getLikedPostsService = async (userId: string) => {
 	return posts.rows;
 };
 
+export const getBookmarkedPostsService = async (userId: string) => {
+	const bookmarks = await getBookmarksOfUser(userId);
+	const bookmarkedPosts = bookmarks.rows.map((bookmark) => bookmark.post_id);
+	const posts = await getPosts(bookmarkedPosts);
+	return posts.rows;
+};
+
 export const likePostService = async (postId: string, userId: string) => {
 	insertIntoLikes(postId, userId);
 };

@@ -2,9 +2,10 @@ import { Router } from "express";
 
 import {
 	createPostController,
+	getRecentPostsController,
 	getUserPostsController,
 	getLikedPostsController,
-	getRecentPostsController,
+	getBookmarkedPostsController,
 	likePostController,
 	unlikePostController,
 	commentPostController,
@@ -19,6 +20,7 @@ router.post("/", createPostController);
 router.get("/latest", getRecentPostsController);
 router.get("/user/:id", getUserPostsController);
 router.get("/user/:id/liked", getLikedPostsController);
+router.get("/user/:id/bookmarked", getBookmarkedPostsController);
 router.post("/:id/like", likePostController);
 router.post("/:id/unlike", unlikePostController);
 router.post("/:id/comment", commentPostController);

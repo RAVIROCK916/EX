@@ -136,6 +136,7 @@ const PostCard = ({ post }: Props) => {
                   >
                     {username}
                   </Button>
+                  <span></span>
                 </Link>
               </HoverCardTrigger>
               <HoverCardContent
@@ -149,7 +150,7 @@ const PostCard = ({ post }: Props) => {
                         img_url={user.profile_picture_url}
                         className="size-16"
                       />
-                      <div className="flex items-end justify-between">
+                      <div className="flex justify-between">
                         <div>
                           <div>{user.name}</div>
                           <span className="text-sm text-neutral-500">

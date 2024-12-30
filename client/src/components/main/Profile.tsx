@@ -5,7 +5,6 @@ import useDebounce from "@/hooks/useDebounce";
 import protectedAPI from "@/lib/axios/auth";
 
 import User from "@/types/user";
-import Post from "@/types/post";
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import FullBleed from "@/components/global/FullBleed";
@@ -30,7 +29,13 @@ import {
   DialogTrigger,
 } from "../ui/dialog";
 
-import useFetch from "@/hooks/useFetch";
+import {
+  USER_BOOKMARKED_POSTS_URL,
+  USER_LIKED_POSTS_URL,
+  USER_POSTS_URL,
+} from "@/constants/api";
+import { cachingDecorator } from "@/utils";
+import fetchData from "@/utils/fetchData";
 
 type ProfileProps = {
   profile: User;
@@ -41,10 +46,9 @@ const Profile = ({ profile }: ProfileProps) => {
   const [isFollowing, setIsFollowing] = useState(profile.is_following);
   const [isFirstRender, setIsFirstRender] = useState(true);
 
-  const [likedPosts, setLikedPosts] = useState<Post[]>([]);
-  const [bookmarkedPosts, setBookmarkedPosts] = useState<Post[]>([]);
-
   const debouncedFollow = useDebounce(isFollowing, 1000);
+
+  const cachedFetch = cachingDecorator(fetchData);
 
   const handleFollow = () => {
     if (!isFollowing) {
@@ -61,16 +65,6 @@ const Profile = ({ profile }: ProfileProps) => {
       ? protectedAPI.post(`/users/follow/${profile.id}`)
       : protectedAPI.post(`/users/unfollow/${profile.id}`);
   }, [debouncedFollow]);
-
-  const getLikedPosts = () => {
-    const { data } = useFetch(`/posts/user/${profile.id}/liked`);
-    setLikedPosts(data);
-  };
-
-  const getBookmarkedPosts = () => {
-    const { data } = useFetch(`/posts/user/${profile.id}/bookmarked`);
-    setBookmarkedPosts(data);
-  };
 
   return profile ? (
     <div className="space-y-8">
@@ -91,7 +85,7 @@ const Profile = ({ profile }: ProfileProps) => {
       </FullBleed>
       <div className="space-y-3 text-sm font-light">
         <div className="flex items-start justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex gap-4">
             <ProfilePicture
               img_url={profile.profile_picture_url}
               className="size-16"
@@ -192,14 +186,12 @@ const Profile = ({ profile }: ProfileProps) => {
             <TabsTrigger
               value="likes"
               className="rounded-none border-b border-neutral-800 data-[state=active]:border-b-2 data-[state=active]:border-white"
-              onClick={getLikedPosts}
             >
               Likes
             </TabsTrigger>
             <TabsTrigger
               value="bookmarks"
               className="rounded-none border-b border-neutral-800 data-[state=active]:border-b-2 data-[state=active]:border-white"
-              onClick={getBookmarkedPosts}
             >
               Bookmarks
             </TabsTrigger>
@@ -212,13 +204,22 @@ const Profile = ({ profile }: ProfileProps) => {
           </TabsList>
         </FullBleed>
         <TabsContent value="posts">
-          <Posts userId={profile.id} />
+          <Posts
+            postsUrl={USER_POSTS_URL(profile.id)}
+            cachedFetch={cachedFetch}
+          />
         </TabsContent>
         <TabsContent value="likes">
-          <div>Replies</div>
+          <Posts
+            postsUrl={USER_LIKED_POSTS_URL(profile.id)}
+            cachedFetch={cachedFetch}
+          />
         </TabsContent>
         <TabsContent value="bookmarks">
-          <div>Likes</div>
+          <Posts
+            postsUrl={USER_BOOKMARKED_POSTS_URL(profile.id)}
+            cachedFetch={cachedFetch}
+          />
         </TabsContent>
         <TabsContent value="media">
           <div>Media</div>
