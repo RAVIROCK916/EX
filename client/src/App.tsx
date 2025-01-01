@@ -1,10 +1,11 @@
 import { Provider } from "react-redux";
 import { routeTree } from "./routeTree.gen";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { notFoundRoute } from "./components/main/Page404";
 
 import store from "./state/store";
 
-export const router = createRouter({ routeTree });
+export const router = createRouter({ routeTree, notFoundRoute });
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
