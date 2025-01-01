@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import type { Request, Response } from "express";
 
-import { getUserByUsername } from "../db/queryFn";
+import { getUserByEmail } from "../db/queryFn";
 import {
 	authService,
 	createNewUser,
@@ -58,20 +58,13 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const signup = async (req: Request, res: Response) => {
-	const { username, email, password } = req.body;
+	const { name, email, password } = req.body;
 
 	// params validation
-	if (!username || !email || !password) {
+	if (!name || !email || !password) {
 		res.status(400).send({
-			error: "Username, email and password are required!",
+			error: "Name, email and password are required!",
 			code: "form_param_format_invalid",
-		});
-		return;
-	}
-	if (username.includes(" ")) {
-		res.status(400).send({
-			error: "Username cannot contain spaces!",
-			code: "form_username_format_invalid",
 		});
 		return;
 	}
@@ -85,15 +78,30 @@ export const signup = async (req: Request, res: Response) => {
 		return;
 	}
 
-	const users = await getUserByUsername(username);
+	const users = await getUserByEmail(email);
 
 	if (users.rows.length > 0) {
 		res.status(400).send({ message: "User already exists" });
 		return;
 	}
 
+	// create unique username
+	let username = "";
+
+	const uniqueUsername = name.toLowerCase().replace(/ /g, "");
+
+	while (1) {
+		const randomNumber = Math.floor(Math.random() * 10000);
+		username = `${uniqueUsername}${randomNumber}`;
+
+		const user = await getUserByUsernameService(username);
+		if (user === null) {
+			break;
+		}
+	}
+
 	try {
-		await createNewUser(username, email, password);
+		await createNewUser(name, username, email, password);
 
 		const user = await getUserByUsernameService(username);
 

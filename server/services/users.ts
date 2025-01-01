@@ -7,7 +7,13 @@ import {
 	followUser,
 	unfollowUser,
 	isFollowing,
+	getUsers,
 } from "../db/queryFn";
+
+export const getUsersService = async () => {
+	const users = await getUsers();
+	return users;
+};
 
 export const getUsersBySearchService = async (search: string) => {
 	const users = await searchUsers(search);

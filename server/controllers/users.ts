@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 
 import {
+	getUsersService,
 	getUsersBySearchService,
 	followUserService,
 	unfollowUserService,
@@ -15,10 +16,14 @@ export const getUsersBySearchController = async (
 	res: Response
 ) => {
 	const { search } = req.query;
-	console.log("search", search);
+
+	if (!search) {
+		const users = await getUsersService();
+		return res.json(users.rows);
+	}
 
 	const users = await getUsersBySearchService(String(search));
-	res.json(users.rows);
+	return res.json(users.rows);
 };
 
 export const getProfileController = async (req: Request, res: Response) => {

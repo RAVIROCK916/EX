@@ -3,14 +3,18 @@ import db from "../db";
 // User queries
 
 export const insertIntoUsers = async (
+	name: string,
 	username: string,
 	email: string,
 	password: string
 ) => {
-	await db.query(
-		"INSERT INTO users (username, email, password) VALUES ($1, $2, $3)",
-		[username, email, password]
+	const user = await db.query(
+		"INSERT INTO users (name, username, email, password) VALUES ($1, $2, $3, $4)",
+		[name, username, email, password]
 	);
+	console.log({ user });
+
+	return user;
 };
 
 export const updateUser = (
@@ -36,6 +40,18 @@ export const getUserById = (id: string) => {
 export const getUserByUsername = (username: string) => {
 	const user = db.query("SELECT * FROM users WHERE username = $1", [username]);
 	return user;
+};
+
+export const getUserByEmail = (email: string) => {
+	const user = db.query("SELECT * FROM users WHERE email = $1", [email]);
+	return user;
+};
+
+export const getUsers = () => {
+	const users = db.query(
+		"SELECT * FROM users ORDER BY created_at DESC LIMIT 10"
+	);
+	return users;
 };
 
 export const searchUsers = (search: string) => {

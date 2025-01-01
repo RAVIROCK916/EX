@@ -12,21 +12,20 @@ import { setToken } from "@/state/reducers/auth";
 import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
-  const [username, setUsername] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
-  const formData = { username, password };
+  const formData = { name: name, password };
 
   const formSchema = z.object({
-    username: z
+    name: z
       .string()
-      .min(3, "Username should be at least 3 characters")
-      .max(20, "Username cannot exceed 20 characters")
-      .regex(/^\S*$/, "Username should not contain spaces"),
+      .min(3, "Name should be at least 3 characters")
+      .max(20, "Name cannot exceed 20 characters"),
     password: z
       .string()
       .min(4, { message: "Password is too short!" })
@@ -55,7 +54,7 @@ const LoginForm = () => {
       const res = await axios.post(
         `${SERVER_URL}/auth/login`,
         {
-          username: username,
+          fullname: name,
           password: password,
         },
         { withCredentials: true },
@@ -71,7 +70,7 @@ const LoginForm = () => {
 
       switch (err_code) {
         case "form_param_format_invalid":
-          toast.error("Invalid username. Please enter a valid username.");
+          toast.error("Invalid name. Please enter a valid name.");
           break;
         case "form_password_pwned":
           toast.error("The password is incorrect. Please try again.");
@@ -90,13 +89,13 @@ const LoginForm = () => {
       <h2 className="text-2xl font-semibold">Login to EX</h2>
       <form onSubmit={handleLogin} className="w-full">
         <div className="w-full space-y-2">
-          <Label htmlFor="username">Username</Label>
+          <Label htmlFor="name">Full Name</Label>
           <Input
-            id="username"
+            id="name"
             type="text"
-            value={username}
+            value={name}
             // disabled={!isLoaded || isLoading}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             placeholder="john_doe"
           />
         </div>
