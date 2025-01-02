@@ -4,6 +4,7 @@ import {
 	getUserByUsername,
 	searchUsers,
 	getFollowers,
+	getFollowingUsers,
 	followUser,
 	unfollowUser,
 	isFollowing,
@@ -27,7 +28,7 @@ export const getProfileService = async (userId: string) => {
 
 export const getUserProfileService = async (username: string) => {
 	const user = await getUserByUsername(username);
-	return user;
+	return user.rows[0];
 };
 
 export const saveProfileService = async (id: string, data: any) => {
@@ -49,7 +50,12 @@ export const saveProfileService = async (id: string, data: any) => {
 
 export const getFollowersService = async (userId: string) => {
 	const followers = await getFollowers(userId);
-	return followers;
+	return followers.rows;
+};
+
+export const getFollowingUsersService = async (userId: string) => {
+	const followingUsers = await getFollowingUsers(userId);
+	return followingUsers.rows;
 };
 
 export const followUserService = async (userId: string, followerId: string) => {

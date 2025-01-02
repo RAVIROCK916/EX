@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 import type { Request, Response } from "express";
 
-import { getUserByEmail } from "../db/queryFn";
 import {
 	authService,
 	createNewUser,
+	getUserByEmailService,
 	getUserByUsernameService,
 } from "../services/auth";
 
@@ -13,22 +13,22 @@ import { generateTokens } from "../utils/generateTokens";
 import { generateAccessToken } from "../utils/generateAccessToken";
 
 export const login = async (req: Request, res: Response) => {
-	const { username, password } = req.body;
+	const { email, password } = req.body;
 
 	// params validation
-	if (!username || !password) {
+	if (!email || !password) {
 		res.status(400).send({
-			error: "Username and password are required!",
+			error: "Email and password are required!",
 		});
 		return;
 	}
 
 	// check if user exists
-	const user = await getUserByUsernameService(username);
+	const user = await getUserByEmailService(email);
 
 	if (!user) {
 		res.status(400).send({
-			error: "Invalid username or password!",
+			error: "Invalid email or password!",
 			code: "form_param_format_invalid",
 		});
 		return;
@@ -71,24 +71,24 @@ export const signup = async (req: Request, res: Response) => {
 
 	// write email validation
 	if (!email.includes("@") || !email.includes(".")) {
-		res.status(400).send({
+		return res.status(400).send({
 			error: "Invalid email format!",
 			code: "form_email_format_invalid",
 		});
-		return;
 	}
 
-	const users = await getUserByEmail(email);
+	const user = await getUserByEmailService(email);
 
-	if (users.rows.length > 0) {
-		res.status(400).send({ message: "User already exists" });
-		return;
+	if (user) {
+		return res
+			.status(400)
+			.send({ error: "User already exists", code: "form_email_duplicate" });
 	}
 
 	// create unique username
 	let username = "";
 
-	const uniqueUsername = name.toLowerCase().replace(/ /g, "");
+	const uniqueUsername = name.slice(0, 8).toLowerCase().replace(/ /g, "");
 
 	while (1) {
 		const randomNumber = Math.floor(Math.random() * 10000);
@@ -132,8 +132,8 @@ export const auth = async (req: Request, res: Response) => {
 	res.status(200).send({
 		message: "Authenticated",
 		id: userId,
-		username: user.rows[0].username,
-		profile_picture_url: user.rows[0].profile_picture_url,
+		username: user.username,
+		profile_picture_url: user.profile_picture_url,
 	});
 };
 
@@ -149,8 +149,6 @@ export const refreshToken = (req: Request, res: Response) => {
 		refreshToken,
 		process.env.REFRESH_TOKEN_SECRET!,
 		(err: any, decoded: any) => {
-			console.log(decoded);
-
 			if (err) {
 				return res
 					.status(401)

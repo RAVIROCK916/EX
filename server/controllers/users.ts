@@ -11,19 +11,25 @@ import {
 	isFollowingService,
 } from "../services/users";
 
+import updateUsersInfo from "../utils/updateUsersInfo";
+
 export const getUsersBySearchController = async (
 	req: Request,
 	res: Response
 ) => {
+	let users;
+
 	const { search } = req.query;
 
 	if (!search) {
-		const users = await getUsersService();
-		return res.json(users.rows);
+		users = await getUsersService();
+	} else {
+		users = await getUsersBySearchService(String(search));
 	}
 
-	const users = await getUsersBySearchService(String(search));
-	return res.json(users.rows);
+	users = await updateUsersInfo(users.rows, req.user);
+
+	return res.json(users);
 };
 
 export const getProfileController = async (req: Request, res: Response) => {
@@ -34,16 +40,12 @@ export const getProfileController = async (req: Request, res: Response) => {
 
 export const getUserProfileController = async (req: Request, res: Response) => {
 	const { username } = req.params;
-	const user = await getUserProfileService(username);
+	let user = await getUserProfileService(username);
 
 	// Check if the user is following the current user
-	console.log(req.user);
-	if (req.user) {
-		const isUserFollowing = await isFollowingService(user.rows[0].id, req.user);
-		user.rows[0].is_following = isUserFollowing?.rows?.length > 0;
-	}
+	user = await updateUsersInfo([user], req.user);
 
-	res.json(user.rows[0]);
+	res.json(user);
 };
 
 export const saveProfileController = async (req: Request, res: Response) => {
@@ -55,8 +57,6 @@ export const saveProfileController = async (req: Request, res: Response) => {
 	if (Object.keys(validUpdates).length === 0) {
 		return;
 	}
-
-	console.log(req.body);
 
 	try {
 		await saveProfileService(req.user, validUpdates);

@@ -12,20 +12,17 @@ import { setToken } from "@/state/reducers/auth";
 import { useDispatch } from "react-redux";
 
 const LoginForm = () => {
-  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
-  const formData = { name: name, password };
+  const formData = { email, password };
 
   const formSchema = z.object({
-    name: z
-      .string()
-      .min(3, "Name should be at least 3 characters")
-      .max(20, "Name cannot exceed 20 characters"),
+    email: z.string().email("Invalid email address!"),
     password: z
       .string()
       .min(4, { message: "Password is too short!" })
@@ -54,8 +51,8 @@ const LoginForm = () => {
       const res = await axios.post(
         `${SERVER_URL}/auth/login`,
         {
-          fullname: name,
-          password: password,
+          email,
+          password,
         },
         { withCredentials: true },
       );
@@ -70,7 +67,7 @@ const LoginForm = () => {
 
       switch (err_code) {
         case "form_param_format_invalid":
-          toast.error("Invalid name. Please enter a valid name.");
+          toast.error("Invalid email. Please enter a valid one.");
           break;
         case "form_password_pwned":
           toast.error("The password is incorrect. Please try again.");
@@ -89,14 +86,14 @@ const LoginForm = () => {
       <h2 className="text-2xl font-semibold">Login to EX</h2>
       <form onSubmit={handleLogin} className="w-full">
         <div className="w-full space-y-2">
-          <Label htmlFor="name">Full Name</Label>
+          <Label htmlFor="email">Email</Label>
           <Input
-            id="name"
-            type="text"
-            value={name}
+            id="email"
+            type="email"
+            value={email}
             // disabled={!isLoaded || isLoading}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="john_doe"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="johndoe@gmail.com"
           />
         </div>
         <div className="mt-4 space-y-2">

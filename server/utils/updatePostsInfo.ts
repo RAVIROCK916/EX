@@ -1,8 +1,9 @@
 import Post from "../types/post";
 import { getLikesService, getBookmarksService } from "../services/posts";
 
-export default async function updatePostInfo(posts: Post[], userId: string) {
+export default async function updatePostsInfo(posts: Post[], userId: string) {
 	if (!userId) return posts;
+
 	// add liked_by_user property to each post
 	const likes = await getLikesService(userId);
 	console.log(likes);

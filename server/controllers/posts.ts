@@ -11,7 +11,7 @@ import {
 	bookmarkPostService,
 	getBookmarkedPostsService,
 } from "../services/posts";
-import updatePostInfo from "../utils/updatePostInfo";
+import updatePostsInfo from "../utils/updatePostsInfo";
 
 export const createPostController = async (req: Request, res: Response) => {
 	const { caption, image } = req.body;
@@ -34,7 +34,7 @@ export const createPostController = async (req: Request, res: Response) => {
 export const getRecentPostsController = async (req: Request, res: Response) => {
 	try {
 		let posts = await getRecentPostsService();
-		posts = await updatePostInfo(posts, req.user);
+		posts = await updatePostsInfo(posts, req.user);
 
 		res.status(200).json(posts);
 	} catch (err) {

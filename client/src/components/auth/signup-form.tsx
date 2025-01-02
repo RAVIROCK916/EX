@@ -71,12 +71,23 @@ const SignUpForm = () => {
       );
 
       dispatch(setToken(res.data.token));
-
       router.navigate({ to: "/" });
+      toast.success("Welcome to EX!");
     } catch (error: any) {
       console.log(error);
 
-      toast.error("Something went wrong! Please try again.");
+      const err_code = error.response.data.code;
+      switch (err_code) {
+        case "form_param_format_invalid":
+          toast.error("Invalid email. Please enter a valid one.");
+          break;
+        case "form_email_duplicate":
+          toast.error("User already exists.");
+          break;
+        default:
+          toast.error("Something went wrong. Please try again");
+          break;
+      }
       return;
     } finally {
       setIsUpdating(false);

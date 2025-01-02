@@ -32,9 +32,9 @@ export const updateUser = (
 	);
 };
 
-export const getUserById = (id: string) => {
-	const user = db.query("SELECT * FROM user_view WHERE id = $1", [id]);
-	return user;
+export const getUserById = async (id: string) => {
+	const user = await db.query("SELECT * FROM user_view WHERE id = $1", [id]);
+	return user.rows[0];
 };
 
 export const getUserByUsername = (username: string) => {
@@ -66,6 +66,14 @@ export const getFollowers = (userId: string) => {
 		userId,
 	]);
 	return followers;
+};
+
+export const getFollowingUsers = (userId: string) => {
+	const followingUsers = db.query(
+		"SELECT * FROM followers WHERE follower_id = $1",
+		[userId]
+	);
+	return followingUsers;
 };
 
 export const followUser = async (userId: string, followerId: string) => {

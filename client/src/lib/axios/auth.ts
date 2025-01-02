@@ -27,23 +27,18 @@ protectedAPI.interceptors.request.use(
 protectedAPI.interceptors.response.use(
   (response) => response,
   async (err) => {
-    switch (err.response.status) {
-      case 401:
-        return err;
-      case 403:
-        try {
-          const originalRequest = err.config;
+    try {
+      const originalRequest = err.config;
 
-          const newAccessToken = await refreshToken();
-          store.dispatch(setToken(newAccessToken));
+      const newAccessToken = await refreshToken();
+      store.dispatch(setToken(newAccessToken));
 
-          originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+      originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
 
-          return protectedAPI(originalRequest);
-        } catch (err) {
-          handleLogout();
-          return err;
-        }
+      return protectedAPI(originalRequest);
+    } catch (err) {
+      handleLogout();
+      return err;
     }
   },
 );

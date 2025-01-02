@@ -4,6 +4,7 @@ type User = {
 	email: string;
 	password: string;
 	created_at: string;
+	is_following?: boolean;
 };
 
 export default User;
