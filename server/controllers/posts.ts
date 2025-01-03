@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import {
+	getPostService,
 	createPostService,
 	getUserPostsService,
 	getRecentPostsService,
@@ -12,6 +13,17 @@ import {
 	getBookmarkedPostsService,
 } from "../services/posts";
 import updatePostsInfo from "../utils/updatePostsInfo";
+
+export const getPostController = async (req: Request, res: Response) => {
+	const { id } = req.params;
+	try {
+		const post = await getPostService(id);
+		res.status(200).json(post);
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ error: "Failed to fetch post" });
+	}
+};
 
 export const createPostController = async (req: Request, res: Response) => {
 	const { caption, image } = req.body;

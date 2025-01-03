@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import {
+	getPostController,
 	createPostController,
 	getRecentPostsController,
 	getUserPostsController,
@@ -18,6 +19,7 @@ const router = Router();
 // router.get("/", getPostsController);
 router.post("/", createPostController);
 router.get("/latest", getRecentPostsController);
+router.get("/:id", getPostController);
 router.get("/user/:id", getUserPostsController);
 router.get("/user/:id/liked", getLikedPostsController);
 router.get("/user/:id/bookmarked", getBookmarkedPostsController);

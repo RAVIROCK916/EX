@@ -12,15 +12,5 @@ export const logger = (
 		`[${reqId}] ${req.method} ${req.url} ${JSON.stringify(req.body)}`
 	);
 
-	res.customSend = (message: string) => {
-		const data = {
-			message: message,
-		};
-
-		console.log(`[${reqId}] ${res.statusCode} ${JSON.stringify(data)}`);
-
-		res.json(data);
-	};
-
 	next();
 };

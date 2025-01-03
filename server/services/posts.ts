@@ -13,6 +13,11 @@ import {
 	getBookmarksOfUser,
 } from "../db/queryFn";
 
+export const getPostService = async (id: string) => {
+	const post = await getPosts([id]);
+	return post.rows[0];
+};
+
 export const createPostService = async (
 	userId: string,
 	caption: string,

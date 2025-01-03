@@ -34,7 +34,7 @@ export const updateUser = (
 
 export const getUserById = async (id: string) => {
 	const user = await db.query("SELECT * FROM user_view WHERE id = $1", [id]);
-	return user.rows[0];
+	return user;
 };
 
 export const getUserByUsername = (username: string) => {
@@ -192,7 +192,7 @@ export const insertIntoComments = (
 
 export const getCommentsOfPost = (postId: string) => {
 	return db.query(
-		"SELECT comments.*, users.username, users.profile_picture_url FROM comments INNER JOIN users ON comments.user_id = users.id WHERE comments.post_id = $1",
+		"SELECT comments.*, users.name, users.username, users.profile_picture_url FROM comments INNER JOIN users ON comments.user_id = users.id WHERE comments.post_id = $1",
 		[postId]
 	);
 };

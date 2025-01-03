@@ -132,6 +132,7 @@ export const auth = async (req: Request, res: Response) => {
 	res.status(200).send({
 		message: "Authenticated",
 		id: userId,
+		name: user.name,
 		username: user.username,
 		profile_picture_url: user.profile_picture_url,
 	});

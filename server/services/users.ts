@@ -23,7 +23,7 @@ export const getUsersBySearchService = async (search: string) => {
 
 export const getProfileService = async (userId: string) => {
 	const user = await getUserById(userId);
-	return user;
+	return user.rows[0];
 };
 
 export const getUserProfileService = async (username: string) => {

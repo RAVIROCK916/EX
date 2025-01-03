@@ -37,7 +37,8 @@ export const getUserByEmailService = async (email: string) => {
 };
 
 export const authService = async (id: string) => {
-	const user = await getUserById(id);
+	const userResults = await getUserById(id);
+	const user = userResults.rows[0];
 	console.log({ user });
 
 	if (!user) {

@@ -8,7 +8,6 @@ import {
 	getProfileService,
 	saveProfileService,
 	getUserProfileService,
-	isFollowingService,
 } from "../services/users";
 
 import updateUsersInfo from "../utils/updateUsersInfo";
@@ -35,17 +34,17 @@ export const getUsersBySearchController = async (
 export const getProfileController = async (req: Request, res: Response) => {
 	const userId = req.user;
 	const user = await getProfileService(userId);
-	res.json(user.rows[0]);
+	res.json(user);
 };
 
 export const getUserProfileController = async (req: Request, res: Response) => {
 	const { username } = req.params;
-	let user = await getUserProfileService(username);
+	const user = await getUserProfileService(username);
 
 	// Check if the user is following the current user
-	user = await updateUsersInfo([user], req.user);
+	const users = await updateUsersInfo([user], req.user);
 
-	res.json(user);
+	res.json(users[0]);
 };
 
 export const saveProfileController = async (req: Request, res: Response) => {
