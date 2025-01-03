@@ -6,7 +6,7 @@ type FullBleedProps = {
 };
 
 const FullBleed = ({ className, children }: FullBleedProps) => {
-  return <div className={cn("-mx-6 xl:-mx-12", className)}>{children}</div>;
+  return <div className={cn("-mx-3 xl:-mx-6", className)}>{children}</div>;
 };
 
 export default FullBleed;
