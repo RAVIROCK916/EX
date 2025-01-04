@@ -1,5 +1,6 @@
 type Post = {
   id: string;
+  name: string;
   username: string;
   caption: string;
   image_url: string;

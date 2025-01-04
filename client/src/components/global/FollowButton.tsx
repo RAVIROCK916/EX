@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 type FollowButtonProps = {
   userId: string;
-  isFollowing: boolean;
+  isFollowing?: boolean;
   onFollowChange?: (isFollowing: boolean) => void;
 };
 

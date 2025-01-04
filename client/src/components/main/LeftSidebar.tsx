@@ -15,7 +15,7 @@ const LeftSidebar = () => {
   // );
 
   return (
-    <Sidebar>
+    <Sidebar className="h-screen">
       <div className="flex h-full max-w-80 flex-col justify-between">
         <div className="space-y-6">
           <div className="my-4 flex flex-col justify-center gap-y-3">

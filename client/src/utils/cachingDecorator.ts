@@ -15,9 +15,8 @@ export default function cachingDecorator(func: Function, time = 10000) {
     }
 
     let result = func(x);
-
     cache.set(x, result);
-    console.log(cache.forEach((value, key) => console.log(key, value)));
+
     return result;
   };
 }

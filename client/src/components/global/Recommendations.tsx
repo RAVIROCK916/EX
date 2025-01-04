@@ -3,6 +3,7 @@ import useFetch from "@/hooks/useFetch";
 import User from "@/types/user";
 import { ProfilePicture } from "./ProfilePicture";
 import FollowButton from "./FollowButton";
+import { Link } from "@tanstack/react-router";
 
 const Recommendations = () => {
   const { data } = useFetch(USER_URL);
@@ -19,12 +20,14 @@ const Recommendations = () => {
                 alt={user.name}
               />
               <div className="flex flex-1 justify-between">
-                <div className="flex flex-col">
-                  <p className="text-sm font-semibold">{user.name}</p>
+                <Link className="flex flex-col" to={`/user/${user.username}`}>
+                  <p className="text-sm font-semibold hover:underline">
+                    {user.name}
+                  </p>
                   <span className="text-xs text-textGray">
                     @{user.username}
                   </span>
-                </div>
+                </Link>
                 <div>
                   <FollowButton
                     userId={user.id}

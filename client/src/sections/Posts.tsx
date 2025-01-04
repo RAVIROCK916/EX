@@ -37,7 +37,7 @@ const Posts = ({ postsUrl, cachedFetch }: Props) => {
         posts.map((post) => <PostCard key={post.id} post={post} />)
       ) : (
         <p className="text-center text-sm text-tertiary-foreground">
-          Nothing posted yet
+          Nothing here...
         </p>
       )}
     </section>

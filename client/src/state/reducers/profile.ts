@@ -4,12 +4,14 @@ export const profileSlice = createSlice({
   name: "profile",
   initialState: {
     id: undefined,
+    name: undefined,
     username: undefined,
     profile_picture_url: undefined,
   },
   reducers: {
     setProfile: (state, action) => {
       state.id = action.payload.id;
+      state.name = action.payload.name;
       state.username = action.payload.username;
       state.profile_picture_url = action.payload.profile_picture_url;
     },

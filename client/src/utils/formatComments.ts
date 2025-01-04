@@ -1,6 +1,4 @@
-import Comment from "../../../server/types/comment";
-
-export default function structureComments(comments: Comment[]) {
+export default function structureComments(comments: any[]) {
   const commentMap: any = {};
 
   // Create a map of all comments
@@ -11,6 +9,7 @@ export default function structureComments(comments: Comment[]) {
       post_id: comment.post_id,
       user: {
         id: comment.user_id,
+        name: comment.name,
         username: comment.username,
         profile_picture_url: comment.profile_picture_url,
       },

@@ -4,6 +4,7 @@ type Comment = {
   post_id: string;
   user: {
     id: string;
+    name: string;
     username: string;
     profile_picture_url: string;
   };

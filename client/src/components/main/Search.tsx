@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import { useEffect, useRef, useState } from "react";
 
 import { Input } from "@/components";
@@ -9,6 +7,7 @@ import useDebounce from "@/hooks/useDebounce";
 import User from "@/types/user";
 import SearchResults from "./SearchResults";
 import { MagnifyingGlass } from "@phosphor-icons/react";
+import protectedAPI from "@/lib/axios/auth";
 
 const Search = () => {
   const [search, setSearch] = useState("");
@@ -46,7 +45,7 @@ const Search = () => {
   };
 
   const fetchUsers = async () => {
-    const res = await axios.get(`${SERVER_URL}/users`, {
+    const res = await protectedAPI.get(`${SERVER_URL}/users`, {
       params: {
         search: debouncedSearch.trim(),
       },

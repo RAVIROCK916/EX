@@ -6,14 +6,12 @@ import protectedAPI from "@/lib/axios/auth";
 import store from "@/state/store";
 import { setProfile } from "@/state/reducers/profile";
 
-import { toast } from "sonner";
-
 export const Route = createFileRoute("/_root/_layout")({
   beforeLoad: async () => {
     try {
       const res = await protectedAPI.get("/auth/me");
-      const { id, username, profile_picture_url } = res.data;
-      store.dispatch(setProfile({ id, username, profile_picture_url }));
+      const { id, name, username, profile_picture_url } = res.data;
+      store.dispatch(setProfile({ id, name, username, profile_picture_url }));
     } catch (error) {
       // toast.error("Not logged in");
       // window.location.href = "/login";

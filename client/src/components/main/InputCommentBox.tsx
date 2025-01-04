@@ -44,6 +44,7 @@ const InputCommentBox = ({
       post_id: post.id,
       user: {
         id: id!,
+        name: name!,
         username: username!,
         profile_picture_url: profile_picture_url!,
       },

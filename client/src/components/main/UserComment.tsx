@@ -12,7 +12,7 @@ type Props = {
 const UserComment = ({ comment }: Props) => {
   const [currentComment, setCurrentComment] = useState<Comment>(comment);
   const [isReplying, setIsReplying] = useState(false);
-  const [showReplies, setShowReplies] = useState(false);
+  const [showReplies, setShowReplies] = useState(true);
 
   const addReply = (reply: Comment) => {
     setCurrentComment((prev) => {
@@ -41,7 +41,12 @@ const UserComment = ({ comment }: Props) => {
         </div>
         <div className="flex-1 space-y-1">
           <div className="flex items-center gap-2 text-sm text-neutral-500">
-            <p className="text-neutral-300">{comment.user.username}</p>
+            <p className="text-neutral-300">
+              {comment.user.name}
+              <span className="ml-2 text-textGray">
+                @{comment.user.username}
+              </span>
+            </p>
             <span className="text-xs text-textGray">
               {agoTime(comment.created_at)}
             </span>
@@ -60,7 +65,7 @@ const UserComment = ({ comment }: Props) => {
           ) : (
             <Button
               variant="ghost"
-              className="h-auto p-0 text-textGray hover:bg-transparent hover:text-neutral-100"
+              className="h-auto p-0 text-xs text-textGray hover:bg-transparent hover:text-neutral-100"
               onClick={handleReply}
             >
               Reply
@@ -71,9 +76,14 @@ const UserComment = ({ comment }: Props) => {
       {currentComment.replies.length > 0 && (
         <div className="ml-12">
           {showReplies ? (
-            <div className="mt-4 space-y-3">
+            <div className="mt-2">
               {currentComment.replies.map((reply: Comment) => (
-                <UserComment key={reply.id} comment={reply} />
+                <div
+                  key={reply.id}
+                  className="border-l border-l-borderGray pl-5 pt-2"
+                >
+                  <UserComment comment={reply} />
+                </div>
               ))}
               <Button
                 variant="ghost"
