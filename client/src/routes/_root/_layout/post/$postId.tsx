@@ -1,11 +1,6 @@
 import Post from "@/types/post";
 import { Headline, Comments, PostCard } from "@/components";
-import PostPageCard from "@/components/main/PostPageCard";
-import {
-  createFileRoute,
-  useLocation,
-  useRouterState,
-} from "@tanstack/react-router";
+import { createFileRoute, useLocation } from "@tanstack/react-router";
 import { createContext } from "react";
 import useFetch from "@/hooks/useFetch";
 

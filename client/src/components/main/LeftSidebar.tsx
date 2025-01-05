@@ -4,9 +4,6 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { handleLogout } from "@/utils/auth/handleLogout";
 import { sidebarLinks } from "@/constants";
 import { SignOut, XLogo } from "@phosphor-icons/react";
-import { ProfilePicture } from "../global/ProfilePicture";
-import { useSelector } from "react-redux";
-import { RootState } from "@/state/store";
 
 const LeftSidebar = () => {
   const { pathname } = useLocation();

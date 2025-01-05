@@ -5,6 +5,6 @@ type Props = {
 };
 
 const PostPageCard = ({ post }: Props) => {
-  return <div>PostPageCard</div>;
+  return <div>{post.caption}</div>;
 };
 export default PostPageCard;
