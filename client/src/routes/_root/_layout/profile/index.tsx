@@ -10,10 +10,8 @@ export const Route = createFileRoute("/_root/_layout/profile/")({
   component: ProfilePage,
 });
 
-type ProfileType = User & { is_following: Boolean };
-
 function ProfilePage() {
-  const [profile, setProfile] = useState<ProfileType>();
+  const [profile, setProfile] = useState<User>();
 
   useEffect(() => {
     protectedAPI.get(`/users/profile`).then((res) => {

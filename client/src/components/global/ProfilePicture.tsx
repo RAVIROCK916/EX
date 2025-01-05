@@ -16,7 +16,7 @@ export function ProfilePicture({
       <AvatarImage
         src={img_url || "https://github.com/shadcn.png"}
         alt={alt || "Avatar"}
-        className="object-cover"
+        className="cursor-pointer object-cover hover:opacity-80"
       />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>

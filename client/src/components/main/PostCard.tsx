@@ -273,7 +273,7 @@ const PostCard = ({ post }: Props) => {
               <div className="w-max">
                 <BookmarkSimple
                   className={cn(
-                    "size-6 cursor-pointer transition-colors hover:text-yellow-500",
+                    "size-6 cursor-pointer transition-colors hover:text-yellow-300",
                     bookmarked && "text-yellow-500",
                   )}
                   weight={bookmarked ? "fill" : undefined}

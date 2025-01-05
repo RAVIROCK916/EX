@@ -17,7 +17,7 @@ function Username() {
     protectedAPI.get(`/users/${username}/profile`).then((res) => {
       setProfile(res.data);
     });
-  }, []);
+  }, [username]);
 
   return profile ? <Profile profile={profile} /> : <div>Loading...</div>;
 }
