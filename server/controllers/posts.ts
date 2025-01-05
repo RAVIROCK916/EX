@@ -59,7 +59,8 @@ export const getUserPostsController = async (req: Request, res: Response) => {
 	const userId = req.params.id;
 
 	try {
-		const posts = await getUserPostsService(userId);
+		let posts = await getUserPostsService(userId);
+		posts = await updatePostsInfo(posts, req.user);
 		res.status(200).json(posts);
 	} catch (err) {
 		console.log(err);
@@ -70,7 +71,8 @@ export const getUserPostsController = async (req: Request, res: Response) => {
 export const getLikedPostsController = async (req: Request, res: Response) => {
 	const userId = req.params.id;
 	try {
-		const posts = await getLikedPostsService(userId);
+		let posts = await getLikedPostsService(userId);
+		posts = await updatePostsInfo(posts, req.user);
 		res.status(200).json(posts);
 	} catch (err) {
 		console.log(err);
@@ -84,7 +86,8 @@ export const getBookmarkedPostsController = async (
 ) => {
 	const userId = req.params.id;
 	try {
-		const posts = await getBookmarkedPostsService(userId);
+		let posts = await getBookmarkedPostsService(userId);
+		posts = await updatePostsInfo(posts, req.user);
 		res.status(200).json(posts);
 	} catch (err) {
 		console.log(err);

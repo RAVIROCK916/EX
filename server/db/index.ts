@@ -11,6 +11,7 @@ db.connect()
 		console.log("Connected to database");
 	})
 	.catch((err) => {
+		console.log("connectionString", connectionString);
 		console.log("Error connecting to database", err);
 	});
 

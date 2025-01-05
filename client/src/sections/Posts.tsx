@@ -6,7 +6,7 @@ import { useNavigate } from "@tanstack/react-router";
 
 type Props = {
   postsUrl: string;
-  cachedFetch?: any;
+  cachedFetch: any;
 };
 
 const Posts = ({ postsUrl, cachedFetch }: Props) => {
@@ -40,7 +40,7 @@ const Posts = ({ postsUrl, cachedFetch }: Props) => {
       ) : (
         <FullBleed>
           <ul>
-            {posts && posts.length > 0 ? (
+            {posts.length > 0 ? (
               posts.map((post) => (
                 <li
                   key={post.id}
