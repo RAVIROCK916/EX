@@ -4,6 +4,7 @@ const connectionString = process.env.DB_CONNECTION_STRING;
 
 const db = new pg.Pool({
 	connectionString,
+	connectionTimeoutMillis: 60000,
 });
 
 db.connect()
