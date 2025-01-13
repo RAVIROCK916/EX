@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Image from "./Image";
 
 type ProfilePictureProps = {
@@ -14,13 +14,8 @@ export function ProfilePicture({
 }: ProfilePictureProps) {
   return (
     <Avatar className={className}>
-      {/* <AvatarImage
-        src={img_url || "https://github.com/shadcn.png"}
-        alt={alt || "Avatar"}
-        className="cursor-pointer object-cover hover:opacity-80"
-      /> */}
       <Image
-        path="general/shadcn.png"
+        src={img_url || "https://github.com/shadcn.png"}
         alt={alt}
         className="cursor-pointer object-cover hover:opacity-80"
       />
