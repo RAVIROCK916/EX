@@ -62,6 +62,7 @@ const InputCommentBox = ({
     <div className="flex items-center gap-4">
       <ProfilePicture
         img_url={profile_picture_url}
+        alt="profile picture"
         className={isReply ? "size-8" : ""}
       />
       <form className="flex w-full items-center gap-4" onSubmit={handleSubmit}>
