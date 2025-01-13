@@ -26,7 +26,8 @@ export const getPostController = async (req: Request, res: Response) => {
 };
 
 export const createPostController = async (req: Request, res: Response) => {
-	const { caption, image } = req.body;
+	const { caption, imageUrl } = req.body;
+	console.log({ caption, imageUrl });
 	const userId = req.user;
 
 	if (!caption) {
@@ -34,7 +35,7 @@ export const createPostController = async (req: Request, res: Response) => {
 	}
 
 	try {
-		await createPostService(userId, caption, image);
+		await createPostService(userId, caption, imageUrl);
 	} catch (err) {
 		console.log(err);
 		return res.status(500).json({ error: "Failed to create post" });

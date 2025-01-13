@@ -129,7 +129,7 @@ const PostCard = ({ post }: Props) => {
     <div className="space-y-5 transition-colors">
       <div className="flex gap-x-2">
         <figure className="size-10 overflow-hidden rounded-full">
-          <ProfilePicture img_url={profile_picture_url} />
+          <ProfilePicture img_url={profile_picture_url} alt={name} />
         </figure>
         <div className="flex-1 space-y-4">
           <div className="space-y-2">
@@ -156,12 +156,14 @@ const PostCard = ({ post }: Props) => {
                   <HoverCardContent
                     align="start"
                     className="w-80 border-neutral-600 bg-neutral-950"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     {user ? (
                       <div>
                         <div className="space-y-2">
                           <ProfilePicture
                             img_url={user.profile_picture_url}
+                            alt={user.name}
                             className="size-16"
                           />
                           <div className="flex justify-between">
@@ -229,8 +231,8 @@ const PostCard = ({ post }: Props) => {
                 {caption}
               </p>
               {image_url && (
-                <figure className="cursor-pointer overflow-hidden rounded-xl border border-borderGray">
-                  {imageLoading && <Skeleton className="h-64 w-full" />}
+                <figure className="max-h-[600px] cursor-pointer overflow-hidden rounded-xl border border-borderGray">
+                  {/* {imageLoading && <Skeleton className="h-64 w-full" />} */}
 
                   <img
                     src={image_url}

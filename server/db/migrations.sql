@@ -37,7 +37,7 @@ CREATE TABLE posts(
 	image_url VARCHAR(255),
 	no_of_likes INT DEFAULT 0,
 	no_of_comments INT DEFAULT 0,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE likes(

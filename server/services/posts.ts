@@ -21,9 +21,9 @@ export const getPostService = async (id: string) => {
 export const createPostService = async (
 	userId: string,
 	caption: string,
-	image: string
+	imageUrl: string
 ) => {
-	const post = await insertIntoPosts(userId, caption, image);
+	const post = await insertIntoPosts(userId, caption, imageUrl);
 	return post;
 };
 

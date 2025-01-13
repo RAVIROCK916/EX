@@ -12,7 +12,6 @@ export const insertIntoUsers = async (
 		"INSERT INTO users (name, username, email, password) VALUES ($1, $2, $3, $4)",
 		[name, username, email, password]
 	);
-	console.log({ user });
 
 	return user;
 };
@@ -121,11 +120,11 @@ export const isFollowing = (userId: string, followerId: string) => {
 export const insertIntoPosts = (
 	userId: string,
 	caption: string,
-	image: string
+	imageUrl: string
 ) => {
 	const post = db.query(
 		"INSERT INTO posts (user_id, caption, image_url) VALUES ($1, $2, $3)",
-		[userId, caption, image]
+		[userId, caption, imageUrl]
 	);
 	return post;
 };

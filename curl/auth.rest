@@ -17,6 +17,5 @@ Content-Type: application/json
 #     "password": "ravi1234"
 # }
 
-GET http://localhost:3000/posts/latest
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIzMWQwNjQ2YS1iOTE3LTRlODItODAwNC1kMGY5YzdkMjUxMDciLCJpYXQiOjE3MzM1NjMzNzYsImV4cCI6MTczMzU2MzQzNn0._HYFp96kGVWCJ7v4RHcrr5JRBjOEmgISPq6MdDJYyW8
+GET http://localhost:3000/images/auth
 

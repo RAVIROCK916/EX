@@ -12,41 +12,20 @@ import { useNavigate } from "@tanstack/react-router";
 
 const PostForm = () => {
   const [caption, setCaption] = useState<string>("");
-  const [image, setImage] = useState<string | null>(null);
-  const [file, setFile] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
-  const formData = { caption, image };
+  const formData = { caption, imageUrl };
 
   const formSchema = z.object({
     caption: z.string().min(1, "Caption is required"),
-    image: z.string().url().nullable().optional(),
+    imageUrl: z.string().url().nullable().optional(),
   });
 
-  const fileSchema = z
-    .instanceof(File)
-    .refine((file) => file.size <= 5 * 1024 * 1024, {
-      message: "File size should be 5MB or less",
-    })
-    .refine(
-      (file) =>
-        ["image/png", "image/jpeg", "image/gif", "image/svg+xml"].includes(
-          file.type,
-        ),
-      {
-        message: "Only .png, .jpg, .gif and .svg files are allowed",
-      },
-    )
-    .optional();
-
-  const handleImage = (image: string | null) => {
-    setImage(image);
-  };
-
-  const handleFile = (file: File) => {
-    setFile(file);
+  const handleImageUrl = (imageUrl: string | null) => {
+    setImageUrl(imageUrl);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,33 +44,6 @@ const PostForm = () => {
       return;
     }
 
-    // image validation
-    if (image) {
-      const fileValidation = fileSchema.safeParse(file);
-      if (!fileValidation.success) {
-        toast.error(fileValidation.error.errors[0].message);
-        return;
-      }
-    }
-
-    setIsSubmitting(true);
-
-    // upload image to server
-    const fileData = new FormData();
-    fileData.append("image", file as File);
-
-    try {
-      const res = await protectedAPI.post(`/images/upload`, fileData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      formData.image = res.data.imageUrl;
-    } catch (error) {
-      console.log(error);
-    }
-
     // submit post to server
 
     try {
@@ -108,7 +60,7 @@ const PostForm = () => {
   };
 
   return (
-    <form className="space-y-6">
+    <form className="space-y-6" onSubmit={handleSubmit}>
       <div className="space-y-2">
         <Label htmlFor="caption">Caption</Label>
         <Textarea
@@ -121,11 +73,7 @@ const PostForm = () => {
       </div>
       <div className="space-y-2">
         <Label htmlFor="file">Add Photos</Label>
-        <ImageUploader
-          value={image}
-          handleImage={handleImage}
-          handleFile={handleFile}
-        />
+        <ImageUploader value={imageUrl} handleImageUrl={handleImageUrl} />
       </div>
       <div className="space-y-2">
         <Label htmlFor="tags">Add Tags</Label>
@@ -141,7 +89,7 @@ const PostForm = () => {
         </Button>
         <Button
           className={`w-20 ${isSubmitting && "cursor-not-allowed"}`}
-          onClick={handleSubmit}
+          type="submit"
           disabled={isSubmitting}
         >
           Post

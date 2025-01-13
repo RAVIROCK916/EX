@@ -88,6 +88,7 @@ const Profile = ({ profile }: ProfileProps) => {
           <div className="flex gap-4">
             <ProfilePicture
               img_url={profile.profile_picture_url}
+              alt={profile.name}
               className="size-16"
             />
             <div>
@@ -171,10 +172,7 @@ const Profile = ({ profile }: ProfileProps) => {
           </p>
         </div>
       </div>
-      <Tabs
-        defaultValue="posts"
-        className="space-y-8 [&:not(:first-child)]:min-h-screen"
-      >
+      <Tabs defaultValue="posts" className="[&:not(:first-child)]:min-h-screen">
         <FullBleed>
           <TabsList className="w-full rounded-none bg-transparent *:w-full">
             <TabsTrigger

@@ -39,23 +39,25 @@ const Posts = ({ postsUrl, cachedFetch }: Props) => {
         </div>
       ) : (
         <FullBleed>
-          <ul>
-            {posts.length > 0 ? (
-              posts.map((post) => (
+          {posts.length > 0 ? (
+            <ul>
+              {posts.map((post) => (
                 <li
                   key={post.id}
-                  className="cursor-pointer border-b border-borderGray p-4 px-6 transition-colors first:border-t hover:bg-backgroundGray"
+                  className="cursor-pointer border-b border-borderGray p-4 px-6 transition-colors duration-75 first:border-t hover:bg-[#050505]"
                   onClick={() => navigate({ to: `/post/${post.id}` })}
                 >
                   <PostCard post={post} />
                 </li>
-              ))
-            ) : (
+              ))}
+            </ul>
+          ) : (
+            <div className="flex flex-col items-center justify-center p-6">
               <p className="text-center text-sm text-tertiary-foreground">
                 Nothing here...
               </p>
-            )}
-          </ul>
+            </div>
+          )}
         </FullBleed>
       )}
     </section>

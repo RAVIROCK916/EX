@@ -23,7 +23,8 @@
     "@types/express": "4",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/multer": "^1.4.12",
-    "@types/pg": "^8.11.10"
+    "@types/pg": "^8.11.10",
+    "imagekit": "^6.0.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

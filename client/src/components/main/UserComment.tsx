@@ -36,11 +36,12 @@ const UserComment = ({ comment }: Props) => {
         <div>
           <ProfilePicture
             img_url={comment.user.profile_picture_url}
+            alt={comment.user.name}
             className="size-8"
           />
         </div>
         <div className="flex-1 space-y-1">
-          <div className="flex items-center gap-2 text-sm text-neutral-500">
+          <div className="flex items-center gap-x-4 text-sm text-neutral-500">
             <p className="text-neutral-300">
               {comment.user.name}
               <span className="ml-2 text-textGray">

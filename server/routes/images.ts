@@ -1,11 +1,14 @@
-import express, { Router } from "express";
-import * as path from "path";
+import { Router } from "express";
 
 import upload from "../lib/multer";
-import { uploadImageController } from "../controllers/images";
+import {
+	imagekitAuthController,
+	uploadImageController,
+} from "../controllers/images";
 
 const router = Router();
 
+router.get("/auth", imagekitAuthController);
 router.post("/upload", upload.single("image"), uploadImageController);
 
 export default router;
