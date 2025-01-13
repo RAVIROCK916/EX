@@ -10,10 +10,6 @@ import { SERVER_URL } from "@/constants";
 
 const protectedAPI = axios.create({
   baseURL: SERVER_URL,
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-  },
   withCredentials: true,
 });
 
