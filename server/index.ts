@@ -15,7 +15,7 @@ import { CLIENT_URL } from "./constants";
 const app = express();
 
 // middleware
-app.use(cors({ origin: "*", credentials: true }));
+app.use(cors({ origin: CLIENT_URL, credentials: true }));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
