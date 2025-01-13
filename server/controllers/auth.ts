@@ -64,11 +64,6 @@ export const login = async (req: Request, res: Response) => {
 			sameSite: "none",
 		});
 	}
-	res.cookie("refreshToken", refreshToken, {
-		httpOnly: true,
-		secure: true,
-		sameSite: false,
-	});
 
 	res.send({ message: "Logged in successfully", token: accessToken });
 };
@@ -125,10 +120,19 @@ export const signup = async (req: Request, res: Response) => {
 		const { accessToken, refreshToken } = generateTokens(user);
 
 		// insert tokens in http-only cookie
-		res.cookie("refreshToken", refreshToken, {
-			httpOnly: true,
-			secure: true,
-		});
+		if (ENVIRONMENT === "development") {
+			res.cookie("refreshToken", refreshToken, {
+				httpOnly: true,
+				secure: false,
+				sameSite: "lax",
+			});
+		} else if (ENVIRONMENT === "production") {
+			res.cookie("refreshToken", refreshToken, {
+				httpOnly: true,
+				secure: true,
+				sameSite: "none",
+			});
+		}
 
 		res.send({ message: "User created", token: accessToken });
 	} catch (error) {
