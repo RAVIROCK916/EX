@@ -1,7 +1,7 @@
 import { IKImage } from "imagekitio-react";
 
 type ImageProps = {
-  src: string;
+  path: string;
   width?: number;
   height?: number;
   alt: string;
@@ -10,11 +10,11 @@ type ImageProps = {
 
 const urlEndpoint = import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT;
 
-const Image = ({ src, width, height, alt, className }: ImageProps) => {
+const Image = ({ path, width, height, alt, className }: ImageProps) => {
   return (
     <IKImage
       urlEndpoint={urlEndpoint}
-      src={src}
+      path={path}
       width={width}
       height={height}
       alt={alt}

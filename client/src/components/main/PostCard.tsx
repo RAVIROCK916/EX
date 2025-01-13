@@ -232,7 +232,7 @@ const PostCard = ({ post }: Props) => {
               </p>
               {image_url && (
                 <figure className="max-h-[600px] cursor-pointer overflow-hidden rounded-xl border border-borderGray">
-                  {imageLoading && <Skeleton className="h-64 w-full" />}
+                  {/* {imageLoading && <Skeleton className="h-64 w-full" />} */}
 
                   <img
                     src={image_url}
