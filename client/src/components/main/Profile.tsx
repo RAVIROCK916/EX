@@ -75,11 +75,11 @@ const Profile = ({ profile }: ProfileProps) => {
         <h1 className="text-2xl font-bold">Profile</h1>
       </div> */}
       <FullBleed className="-mt-10">
-        <figure className="h-48 w-full overflow-hidden bg-neutral-800">
+        <figure className="h-64 w-full overflow-hidden bg-neutral-800">
           <img
             src={profile.cover_picture_url}
             alt=""
-            className="object-cover object-center"
+            className="w-full object-cover object-center"
           />
         </figure>
       </FullBleed>

@@ -40,24 +40,6 @@ enum Gender {
 function EditProfilePage() {
   const navigate = useNavigate();
 
-  const [images, setImages] = useState<{
-    profileImage: File | null;
-    coverImage: File | null;
-  }>({
-    profileImage: null,
-    coverImage: null,
-  });
-
-  console.log({ images });
-
-  const handleProfileImage = (image: File | null) => {
-    setImages({ ...images, profileImage: image });
-  };
-
-  const handleCoverImage = (image: File | null) => {
-    setImages({ ...images, coverImage: image });
-  };
-
   const profile = useRouterState({ select: (s) => s.location.state.profile });
 
   const [form, setForm] = useState<FormData>({
@@ -71,6 +53,14 @@ function EditProfilePage() {
     profile_picture_url: profile?.profile_picture_url || undefined,
     cover_picture_url: profile?.cover_picture_url || undefined,
   });
+
+  const handleProfileImage = (image: { url: string }) => {
+    setForm({ ...form, profile_picture_url: image.url });
+  };
+
+  const handleCoverImage = (image: { url: string }) => {
+    setForm({ ...form, cover_picture_url: image.url });
+  };
 
   const formSchema = z.object({
     name: z.string().min(3, "Name should be at least 3 characters").optional(),
@@ -112,20 +102,6 @@ function EditProfilePage() {
           toast.error(`${error.path}: ${error.message}`);
         });
       return;
-    }
-
-    // upload images
-    if (!images.profileImage) {
-      toast.error("Please upload profile image");
-      return;
-    }
-
-    const profileImageUrl = await uploadFile(images.profileImage);
-    form.profile_picture_url = profileImageUrl;
-
-    if (images.coverImage) {
-      const coverImageUrl = await uploadFile(images.coverImage);
-      form.cover_picture_url = coverImageUrl;
     }
 
     // submit form
@@ -205,11 +181,14 @@ function EditProfilePage() {
         </div>
         <div>
           <Label>Profile Picture</Label>
-          <FileUploader handleFile={handleProfileImage} />
+          <FileUploader
+            folder="/users/profile"
+            onSuccess={handleProfileImage}
+          />
         </div>
         <div>
           <Label>Cover Picture</Label>
-          <FileUploader handleFile={handleCoverImage} />
+          <FileUploader folder="/users/cover" onSuccess={handleCoverImage} />
         </div>
         <div>
           <Label htmlFor="location">Location</Label>

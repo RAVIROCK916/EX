@@ -1,17 +1,56 @@
 import { Input } from "@/components";
-import { ChangeEvent } from "react";
+import { authenticator, onError, publicKey, urlEndpoint } from "@/lib/imagekit";
+import { IKContext, IKUpload } from "imagekitio-react";
+import { useRef, useState } from "react";
+import Image from "./Image";
 
 type FileUploaderProps = {
-  handleFile: (file: File) => void;
+  folder: string;
+  onSuccess?: (res: any) => void;
 };
 
-const FileUploader = ({ handleFile }: FileUploaderProps) => {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      handleFile(file);
-    }
+const FileUploader = ({ folder, onSuccess }: FileUploaderProps) => {
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const uploadRef = useRef<HTMLInputElement>(null);
+
+  console.log(imageUrl);
+
+  const handleClick = () => {
+    if (!uploadRef.current) return;
+    uploadRef.current?.click();
   };
-  return <Input type="file" onChange={handleChange} />;
+
+  const handleSuccess = (res: any) => {
+    setImageUrl(res.url);
+    onSuccess?.(res);
+  };
+
+  return (
+    <IKContext
+      urlEndpoint={urlEndpoint}
+      publicKey={publicKey}
+      authenticator={authenticator}
+    >
+      <IKUpload
+        ref={uploadRef}
+        className="hidden"
+        useUniqueFileName={true}
+        folder={folder}
+        onSuccess={handleSuccess}
+        onError={onError}
+      />
+      {imageUrl ? (
+        <Image
+          src={imageUrl}
+          width={200}
+          height={200}
+          alt="uploaded image"
+          className="rounded-md border border-neutral-400"
+        />
+      ) : (
+        <Input type="file" onClick={handleClick} />
+      )}
+    </IKContext>
+  );
 };
 export default FileUploader;
