@@ -1,5 +1,9 @@
 import { Outlet } from "@tanstack/react-router";
 
+type MainProps = {
+  onToggleLeftSidebar: () => void;
+};
+
 const Main = () => {
   return (
     <main className="h-screen overflow-y-auto border-x border-borderGray">

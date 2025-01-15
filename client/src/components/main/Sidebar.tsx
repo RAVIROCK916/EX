@@ -8,7 +8,10 @@ type Props = {
 const Sidebar = ({ children, className }: Props) => {
   return (
     <aside
-      className={cn("sticky top-0 hidden h-screen p-6 sm:block", className)}
+      className={cn(
+        "sticky top-0 hidden h-screen p-2 sm:block sm:p-4 lg:p-6",
+        className,
+      )}
     >
       {children}
     </aside>

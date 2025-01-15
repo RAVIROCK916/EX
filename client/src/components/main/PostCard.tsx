@@ -237,7 +237,7 @@ const PostCard = ({ post }: Props) => {
                   <img
                     src={image_url}
                     alt={caption}
-                    className={`transition-opacity hover:opacity-90 ${imageLoading ? "hidden" : "block"}`}
+                    className={`w-full object-center transition-opacity hover:opacity-90 ${imageLoading ? "hidden" : "block"}`}
                     onLoad={() => setImageLoading(false)}
                   />
                 </figure>

@@ -24,7 +24,7 @@ function RootLayout() {
   return (
     <>
       <Toaster richColors theme="dark" position="top-right" />
-      <div className="sm:grid sm:grid-cols-[1fr_2fr] lg:grid-cols-[1fr_2fr_1fr]">
+      <div className="flex md:grid md:grid-cols-[1fr_2fr] lg:grid-cols-[1fr_2fr_1fr]">
         <LeftSidebar />
         <Main />
         <RightSidebar />

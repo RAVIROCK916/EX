@@ -19,8 +19,8 @@ function PostPage() {
 
   return (
     post && (
-      <div className="space-y-5">
-        <Headline title="Post" />
+      <div className="-my-4 space-y-5">
+        <Headline title="Post" className="-mx-4 px-4" />
         <PostContext.Provider value={post}>
           <div className="space-y-8">
             <PostCard post={post} />

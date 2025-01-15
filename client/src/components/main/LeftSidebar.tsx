@@ -12,7 +12,7 @@ const LeftSidebar = () => {
   // );
 
   return (
-    <Sidebar className="h-screen">
+    <Sidebar className="block h-screen">
       <div className="flex h-full max-w-80 flex-col justify-between">
         <div className="space-y-6">
           <div className="my-4 flex flex-col justify-center gap-y-3">
@@ -33,7 +33,7 @@ const LeftSidebar = () => {
                   <link.icon
                     className={`h-6 w-6 stroke-[1.5px] ${isActive && "!stroke-2"}`}
                   />
-                  <p>{link.label}</p>
+                  <p className="hidden sm:block">{link.label}</p>
                 </Link>
               );
             })}
@@ -46,7 +46,7 @@ const LeftSidebar = () => {
             className="flex items-center gap-4 rounded-md px-4 py-3 transition-all hover:bg-neutral-900"
           >
             <SignOut className="h-6 w-6" />
-            <p>Logout</p>
+            <p className="hidden sm:block">Logout</p>
           </Link>
         </div>
       </div>
