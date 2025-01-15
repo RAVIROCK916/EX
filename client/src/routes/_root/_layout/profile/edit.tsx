@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/select";
 import protectedAPI from "@/lib/axios/auth";
 import { toast } from "sonner";
-import uploadFile from "@/utils/uploadFile";
 
 export const Route = createFileRoute("/_root/_layout/profile/edit")({
   component: EditProfilePage,
