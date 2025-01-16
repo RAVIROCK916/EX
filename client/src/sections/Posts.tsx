@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Post from "@/types/post";
 import { PostCard, Loader } from "@/components";
-import FullBleed from "@/components/global/FullBleed";
 import { useNavigate } from "@tanstack/react-router";
 
 type Props = {
@@ -38,13 +37,13 @@ const Posts = ({ postsUrl, cachedFetch }: Props) => {
           <Loader />
         </div>
       ) : (
-        <FullBleed>
+        <div>
           {posts.length > 0 ? (
             <ul>
               {posts.map((post) => (
                 <li
                   key={post.id}
-                  className="cursor-pointer border-b border-borderGray p-4 px-6 transition-colors duration-75 first:border-t hover:bg-[#050505]"
+                  className="xs:p-4 cursor-pointer border-b border-borderGray p-2 transition-colors duration-75 first:border-t hover:bg-[#050505]"
                   onClick={() => navigate({ to: `/post/${post.id}` })}
                 >
                   <PostCard post={post} />
@@ -58,7 +57,7 @@ const Posts = ({ postsUrl, cachedFetch }: Props) => {
               </p>
             </div>
           )}
-        </FullBleed>
+        </div>
       )}
     </section>
   );

@@ -75,7 +75,7 @@ const ImageUploader = ({ value, handleImageUrl }: Props) => {
           authenticator={authenticator}
         >
           <Images size={64} strokeWidth="1" />
-          <h3 className="text-lg font-medium">
+          <h3 className="text-sm font-medium md:text-lg">
             Drag and drop your photos here
           </h3>
           <p className="text-sm text-neutral-500">SVG, PNG, JPG, GIF</p>

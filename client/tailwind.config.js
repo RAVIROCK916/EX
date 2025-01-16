@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-import tailwindAnimation from "tailwindcss-animate"
+import tailwindAnimation from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
@@ -65,6 +65,9 @@ export default {
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
         },
+      },
+      screens: {
+        xs: "480px",
       },
     },
   },

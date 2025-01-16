@@ -3,6 +3,7 @@ import { Headline, Comments, PostCard } from "@/components";
 import { createFileRoute, useLocation } from "@tanstack/react-router";
 import { createContext } from "react";
 import useFetch from "@/hooks/useFetch";
+import FullBleed from "@/components/global/FullBleed";
 
 export const Route = createFileRoute("/_root/_layout/post/$postId")({
   component: PostPage,
@@ -20,7 +21,9 @@ function PostPage() {
   return (
     post && (
       <div className="-my-4 space-y-5">
-        <Headline title="Post" className="-mx-4 px-4" />
+        <FullBleed>
+          <Headline title="Post" />
+        </FullBleed>
         <PostContext.Provider value={post}>
           <div className="space-y-8">
             <PostCard post={post} />

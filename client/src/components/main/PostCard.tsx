@@ -222,7 +222,10 @@ const PostCard = ({ post }: Props) => {
             </div>
             <div className="space-y-3">
               <p
-                className={cn(!isPostPage && "cursor-pointer", "text-lg")}
+                className={cn(
+                  !isPostPage && "cursor-pointer",
+                  "text-sm sm:text-base md:text-lg",
+                )}
                 onClick={() => {
                   if (isPostPage) return;
                   navigate({ to: `/post/${post.id}`, state: { post } });

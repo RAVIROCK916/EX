@@ -28,6 +28,10 @@ const PostForm = () => {
     setImageUrl(imageUrl);
   };
 
+  const handleCancel = () => {
+    navigate({ to: "/", replace: true });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log({ formData });
@@ -61,6 +65,7 @@ const PostForm = () => {
 
   return (
     <form className="space-y-6" onSubmit={handleSubmit}>
+      {/* Caption */}
       <div className="space-y-2">
         <Label htmlFor="caption">Caption</Label>
         <Textarea
@@ -71,10 +76,12 @@ const PostForm = () => {
           placeholder="Write a caption for your post"
         />
       </div>
+      {/* Image uploader */}
       <div className="space-y-2">
         <Label htmlFor="file">Add Photos</Label>
         <ImageUploader value={imageUrl} handleImageUrl={handleImageUrl} />
       </div>
+      {/* Tags */}
       <div className="space-y-2">
         <Label htmlFor="tags">Add Tags</Label>
         <Input
@@ -83,8 +90,9 @@ const PostForm = () => {
           placeholder="Travel, Nature, Beach, Mountains..."
         />
       </div>
+      {/* Submit button */}
       <div className="flex justify-end gap-x-6">
-        <Button className="" variant="ghost">
+        <Button variant="ghost" onClick={handleCancel}>
           Cancel
         </Button>
         <Button

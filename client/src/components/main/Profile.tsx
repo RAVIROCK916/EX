@@ -74,8 +74,9 @@ const Profile = ({ profile }: ProfileProps) => {
         </span>
         <h1 className="text-2xl font-bold">Profile</h1>
       </div> */}
+      {/* Cover Picture */}
       <FullBleed className="-mt-10">
-        <figure className="h-64 w-full overflow-hidden bg-neutral-800">
+        <figure className="h-48 w-full overflow-hidden bg-neutral-800 xl:h-56">
           <img
             src={profile.cover_picture_url}
             alt=""
@@ -83,16 +84,17 @@ const Profile = ({ profile }: ProfileProps) => {
           />
         </figure>
       </FullBleed>
+      {/* Profile Info */}
       <div className="space-y-3 text-sm font-light">
         <div className="flex items-start justify-between">
           <div className="flex gap-4">
             <ProfilePicture
               img_url={profile.profile_picture_url}
               alt={profile.name}
-              className="size-16"
+              className="size-12 md:size-16"
             />
             <div>
-              <h2 className="text-2xl font-semibold">{profile.name}</h2>
+              <h2 className="font-semibold">{profile.name}</h2>
               <p className="tracking-wide text-tertiary-foreground">
                 @{profile.username}
               </p>
@@ -100,7 +102,9 @@ const Profile = ({ profile }: ProfileProps) => {
           </div>
           {profile.id === id ? (
             <Link to="/profile/edit" state={{ profile }}>
-              <Button variant="outline">Edit Profile</Button>
+              <Button variant="outline" size="sm">
+                Edit Profile
+              </Button>
             </Link>
           ) : !isFollowing ? (
             <Button onClick={handleFollow}>Follow</Button>
@@ -129,20 +133,22 @@ const Profile = ({ profile }: ProfileProps) => {
           )}
         </div>
         <div>
-          <p className="text-base font-normal">{profile.bio}</p>
+          <p>{profile.bio}</p>
         </div>
         <div>
-          <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm text-tertiary-foreground *:flex *:items-center *:gap-1">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 text-tertiary-foreground *:flex *:items-center *:gap-1">
             {profile.location && (
               <p>
                 <MapPin className="size-4" />
-                <span>{profile.location}</span>
+                <span className="text-xs sm:text-sm xl:text-base">
+                  {profile.location}
+                </span>
               </p>
             )}
             {profile.personal_link && (
               <p>
                 <Link2 className="size-4" />
-                <span className="text-blue-300">
+                <span className="text-xs text-blue-300 sm:text-sm xl:text-base">
                   <Link to={profile.personal_link} target="_blank">
                     {removeProtocol(profile.personal_link)}
                   </Link>
@@ -152,12 +158,16 @@ const Profile = ({ profile }: ProfileProps) => {
             {profile.birth_date && (
               <p>
                 <Cake className="size-4" />
-                <span>{formatDate(profile.birth_date)}</span>
+                <span className="text-xs sm:text-sm xl:text-base">
+                  {formatDate(profile.birth_date)}
+                </span>
               </p>
             )}
             <p>
               <Calendar className="size-4" />
-              <span>Joined on {formatDate(profile.created_at)}</span>
+              <span className="text-xs sm:text-sm xl:text-base">
+                Joined on {formatDate(profile.created_at)}
+              </span>
             </p>
           </div>
         </div>
@@ -172,8 +182,12 @@ const Profile = ({ profile }: ProfileProps) => {
           </p>
         </div>
       </div>
-      <Tabs defaultValue="posts" className="[&:not(:first-child)]:min-h-screen">
-        <FullBleed>
+      {/* Posts */}
+      <FullBleed>
+        <Tabs
+          defaultValue="posts"
+          className="[&:not(:first-child)]:min-h-screen"
+        >
           <TabsList className="w-full rounded-none bg-transparent *:w-full">
             <TabsTrigger
               value="posts"
@@ -200,29 +214,29 @@ const Profile = ({ profile }: ProfileProps) => {
               Media
             </TabsTrigger>
           </TabsList>
-        </FullBleed>
-        <TabsContent value="posts">
-          <Posts
-            postsUrl={USER_POSTS_URL(profile.id)}
-            cachedFetch={cachedFetch}
-          />
-        </TabsContent>
-        <TabsContent value="likes">
-          <Posts
-            postsUrl={USER_LIKED_POSTS_URL(profile.id)}
-            cachedFetch={cachedFetch}
-          />
-        </TabsContent>
-        <TabsContent value="bookmarks">
-          <Posts
-            postsUrl={USER_BOOKMARKED_POSTS_URL(profile.id)}
-            cachedFetch={cachedFetch}
-          />
-        </TabsContent>
-        <TabsContent value="media">
-          <div>Media</div>
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="posts">
+            <Posts
+              postsUrl={USER_POSTS_URL(profile.id)}
+              cachedFetch={cachedFetch}
+            />
+          </TabsContent>
+          <TabsContent value="likes">
+            <Posts
+              postsUrl={USER_LIKED_POSTS_URL(profile.id)}
+              cachedFetch={cachedFetch}
+            />
+          </TabsContent>
+          <TabsContent value="bookmarks">
+            <Posts
+              postsUrl={USER_BOOKMARKED_POSTS_URL(profile.id)}
+              cachedFetch={cachedFetch}
+            />
+          </TabsContent>
+          <TabsContent value="media">
+            <div>Media</div>
+          </TabsContent>
+        </Tabs>
+      </FullBleed>
     </div>
   ) : (
     <div>Loading...</div>

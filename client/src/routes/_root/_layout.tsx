@@ -6,6 +6,8 @@ import protectedAPI from "@/lib/axios/auth";
 import store from "@/state/store";
 import { setProfile } from "@/state/reducers/profile";
 
+import "@/index.css";
+
 export const Route = createFileRoute("/_root/_layout")({
   beforeLoad: async () => {
     try {
@@ -24,7 +26,7 @@ function RootLayout() {
   return (
     <>
       <Toaster richColors theme="dark" position="top-right" />
-      <div className="flex md:grid md:grid-cols-[1fr_2fr] lg:grid-cols-[1fr_2fr_1fr]">
+      <div className="flex sm:grid sm:grid-cols-[1fr_2fr] lg:grid-cols-[1fr_2fr_1fr]">
         <LeftSidebar />
         <Main />
         <RightSidebar />

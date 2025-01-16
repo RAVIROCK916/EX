@@ -10,7 +10,7 @@ const Headline = ({ title, className }: Props) => {
   return (
     <div
       className={cn(
-        "sticky top-0 z-10 flex items-center gap-6 border-b border-borderGray bg-black bg-opacity-65 py-3 text-tertiary backdrop-blur-md",
+        "sticky top-0 z-10 flex items-center gap-6 border-b border-borderGray bg-black bg-opacity-65 p-3 text-tertiary backdrop-blur-md",
         className,
       )}
     >
